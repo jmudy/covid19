@@ -549,7 +549,7 @@ kable(head(datos, 10))</code></pre>
 </tbody>
 </table>
 <p>Carga normal desde R:</p>
-<pre class="r"><code>datos &lt;- read.csv(&quot;data/covid_19_clean_complete.csv&quot;)
+<pre class="r"><code>datos &lt;- read.csv(&quot;data/covid_19_clean_complete.csv&quot;, stringsAsFactors = T)
 datos %&gt;% head(10) %&gt;% kable()</code></pre>
 <table>
 <colgroup>
@@ -698,6 +698,3992 @@ datos %&gt;% head(10) %&gt;% kable()</code></pre>
 <td align="right">0</td>
 <td align="right">0</td>
 <td align="left">Western Pacific</td>
+</tr>
+</tbody>
+</table>
+<div id="estructura-de-los-datos" class="section level2">
+<h2>Estructura de los datos</h2>
+<pre class="r"><code>str(datos)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    49068 obs. of  10 variables:
+##  $ Province.State: Factor w/ 79 levels &quot;&quot;,&quot;Alberta&quot;,&quot;Anguilla&quot;,..: 1 1 1 1 1 1 1 1 6 47 ...
+##  $ Country.Region: Factor w/ 187 levels &quot;Afghanistan&quot;,..: 1 2 3 4 5 6 7 8 9 9 ...
+##  $ Lat           : num  33.9 41.2 28 42.5 -11.2 ...
+##  $ Long          : num  67.71 20.17 1.66 1.52 17.87 ...
+##  $ Date          : Factor w/ 188 levels &quot;2020-01-22&quot;,&quot;2020-01-23&quot;,..: 1 1 1 1 1 1 1 1 1 1 ...
+##  $ Confirmed     : int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ Deaths        : int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ Recovered     : int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ Active        : int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ WHO.Region    : Factor w/ 6 levels &quot;Africa&quot;,&quot;Americas&quot;,..: 3 4 1 4 1 2 2 4 6 6 ...</code></pre>
+<pre class="r"><code>colnames(datos) = c(&quot;Provincia_Estado&quot;,
+                    &quot;Pais_Region&quot;,
+                    &quot;Latitud&quot;, # N+ o S-
+                    &quot;Longitud&quot;, # E+ o W-
+                    &quot;Fecha&quot;,
+                    &quot;Casos_Confirmados&quot;,
+                    &quot;Casos_Muertos&quot;,
+                    &quot;Casos_Recuperados&quot;,
+                    &quot;Casos Activos&quot;,
+                    &quot;WHO_Region&quot;
+                    )
+datos %&gt;% head() %&gt;% kable() # %&gt;% kable_styling()</code></pre>
+<table>
+<colgroup>
+<col width="11%" />
+<col width="12%" />
+<col width="6%" />
+<col width="6%" />
+<col width="7%" />
+<col width="11%" />
+<col width="9%" />
+<col width="11%" />
+<col width="9%" />
+<col width="14%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Provincia_Estado</th>
+<th align="left">Pais_Region</th>
+<th align="right">Latitud</th>
+<th align="right">Longitud</th>
+<th align="left">Fecha</th>
+<th align="right">Casos_Confirmados</th>
+<th align="right">Casos_Muertos</th>
+<th align="right">Casos_Recuperados</th>
+<th align="right">Casos Activos</th>
+<th align="left">WHO_Region</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"></td>
+<td align="left">Afghanistan</td>
+<td align="right">33.93911</td>
+<td align="right">67.70995</td>
+<td align="left">2020-01-22</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="left">Eastern Mediterranean</td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left">Albania</td>
+<td align="right">41.15330</td>
+<td align="right">20.16830</td>
+<td align="left">2020-01-22</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="left">Europe</td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left">Algeria</td>
+<td align="right">28.03390</td>
+<td align="right">1.65960</td>
+<td align="left">2020-01-22</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="left">Africa</td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left">Andorra</td>
+<td align="right">42.50630</td>
+<td align="right">1.52180</td>
+<td align="left">2020-01-22</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="left">Europe</td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left">Angola</td>
+<td align="right">-11.20270</td>
+<td align="right">17.87390</td>
+<td align="left">2020-01-22</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="left">Africa</td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left">Antigua and Barbuda</td>
+<td align="right">17.06080</td>
+<td align="right">-61.79640</td>
+<td align="left">2020-01-22</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="left">Americas</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Cualitativas se convierten <code>factor</code> o bien
+<code>as.factor</code>.</li>
+<li>Ordinales se convierten con <code>ordered</code>.</li>
+<li>Cuantitativas se convierten con <code>as.numeric</code>.</li>
+</ul>
+<p>Cambiar la columna fecha a tipo Date:</p>
+<pre class="r"><code>#datos$Fecha %&lt;&gt;% as.Date(format=&quot;%Y-%m-%d&quot;)
+datos$Fecha %&lt;&gt;% ymd() # Con librería lubridate
+str(datos)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    49068 obs. of  10 variables:
+##  $ Provincia_Estado : Factor w/ 79 levels &quot;&quot;,&quot;Alberta&quot;,&quot;Anguilla&quot;,..: 1 1 1 1 1 1 1 1 6 47 ...
+##  $ Pais_Region      : Factor w/ 187 levels &quot;Afghanistan&quot;,..: 1 2 3 4 5 6 7 8 9 9 ...
+##  $ Latitud          : num  33.9 41.2 28 42.5 -11.2 ...
+##  $ Longitud         : num  67.71 20.17 1.66 1.52 17.87 ...
+##  $ Fecha            : Date, format: &quot;2020-01-22&quot; &quot;2020-01-22&quot; ...
+##  $ Casos_Confirmados: int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ Casos_Muertos    : int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ Casos_Recuperados: int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ Casos Activos    : int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ WHO_Region       : Factor w/ 6 levels &quot;Africa&quot;,&quot;Americas&quot;,..: 3 4 1 4 1 2 2 4 6 6 ...</code></pre>
+<p><span class="math display">\[Casos\ Confirmados = Muertos +
+Recuperados + Enfermos\]</span></p>
+<pre class="r"><code># Lo siguiente da lo mismo que la columna Casos_Activos, pero en el dataset que se
+# utilizó en el curso no aparecía
+datos %&lt;&gt;%
+  mutate(Casos_Enfermos = Casos_Confirmados - Casos_Muertos - Casos_Recuperados)
+
+datos %&gt;%
+  filter(Casos_Confirmados &gt; 10000) %&gt;%
+  head() %&gt;%
+  kable()</code></pre>
+<table>
+<colgroup>
+<col width="11%" />
+<col width="7%" />
+<col width="5%" />
+<col width="5%" />
+<col width="7%" />
+<col width="11%" />
+<col width="9%" />
+<col width="11%" />
+<col width="9%" />
+<col width="10%" />
+<col width="9%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Provincia_Estado</th>
+<th align="left">Pais_Region</th>
+<th align="right">Latitud</th>
+<th align="right">Longitud</th>
+<th align="left">Fecha</th>
+<th align="right">Casos_Confirmados</th>
+<th align="right">Casos_Muertos</th>
+<th align="right">Casos_Recuperados</th>
+<th align="right">Casos Activos</th>
+<th align="left">WHO_Region</th>
+<th align="right">Casos_Enfermos</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Hubei</td>
+<td align="left">China</td>
+<td align="right">30.9756</td>
+<td align="right">112.2707</td>
+<td align="left">2020-02-02</td>
+<td align="right">11177</td>
+<td align="right">350</td>
+<td align="right">295</td>
+<td align="right">10532</td>
+<td align="left">Western Pacific</td>
+<td align="right">10532</td>
+</tr>
+<tr class="even">
+<td align="left">Hubei</td>
+<td align="left">China</td>
+<td align="right">30.9756</td>
+<td align="right">112.2707</td>
+<td align="left">2020-02-03</td>
+<td align="right">13522</td>
+<td align="right">414</td>
+<td align="right">386</td>
+<td align="right">12722</td>
+<td align="left">Western Pacific</td>
+<td align="right">12722</td>
+</tr>
+<tr class="odd">
+<td align="left">Hubei</td>
+<td align="left">China</td>
+<td align="right">30.9756</td>
+<td align="right">112.2707</td>
+<td align="left">2020-02-04</td>
+<td align="right">16678</td>
+<td align="right">479</td>
+<td align="right">522</td>
+<td align="right">15677</td>
+<td align="left">Western Pacific</td>
+<td align="right">15677</td>
+</tr>
+<tr class="even">
+<td align="left">Hubei</td>
+<td align="left">China</td>
+<td align="right">30.9756</td>
+<td align="right">112.2707</td>
+<td align="left">2020-02-05</td>
+<td align="right">19665</td>
+<td align="right">549</td>
+<td align="right">633</td>
+<td align="right">18483</td>
+<td align="left">Western Pacific</td>
+<td align="right">18483</td>
+</tr>
+<tr class="odd">
+<td align="left">Hubei</td>
+<td align="left">China</td>
+<td align="right">30.9756</td>
+<td align="right">112.2707</td>
+<td align="left">2020-02-06</td>
+<td align="right">22112</td>
+<td align="right">618</td>
+<td align="right">817</td>
+<td align="right">20677</td>
+<td align="left">Western Pacific</td>
+<td align="right">20677</td>
+</tr>
+<tr class="even">
+<td align="left">Hubei</td>
+<td align="left">China</td>
+<td align="right">30.9756</td>
+<td align="right">112.2707</td>
+<td align="left">2020-02-07</td>
+<td align="right">24953</td>
+<td align="right">699</td>
+<td align="right">1115</td>
+<td align="right">23139</td>
+<td align="left">Western Pacific</td>
+<td align="right">23139</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>datos %&gt;%
+  filter(Casos_Enfermos &lt; 0) %&gt;%
+  arrange(Provincia_Estado, Fecha) %&gt;%
+  kable()</code></pre>
+<table>
+<colgroup>
+<col width="10%" />
+<col width="9%" />
+<col width="6%" />
+<col width="6%" />
+<col width="6%" />
+<col width="11%" />
+<col width="8%" />
+<col width="11%" />
+<col width="8%" />
+<col width="10%" />
+<col width="9%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Provincia_Estado</th>
+<th align="left">Pais_Region</th>
+<th align="right">Latitud</th>
+<th align="right">Longitud</th>
+<th align="left">Fecha</th>
+<th align="right">Casos_Confirmados</th>
+<th align="right">Casos_Muertos</th>
+<th align="right">Casos_Recuperados</th>
+<th align="right">Casos Activos</th>
+<th align="left">WHO_Region</th>
+<th align="right">Casos_Enfermos</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"></td>
+<td align="left">Liechtenstein</td>
+<td align="right">47.140000</td>
+<td align="right">9.55000</td>
+<td align="left">2020-06-23</td>
+<td align="right">82</td>
+<td align="right">2</td>
+<td align="right">81</td>
+<td align="right">-1</td>
+<td align="left">Europe</td>
+<td align="right">-1</td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left">Uganda</td>
+<td align="right">1.373333</td>
+<td align="right">32.29028</td>
+<td align="left">2020-07-20</td>
+<td align="right">1069</td>
+<td align="right">0</td>
+<td align="right">1071</td>
+<td align="right">-2</td>
+<td align="left">Africa</td>
+<td align="right">-2</td>
+</tr>
+<tr class="odd">
+<td align="left">Channel Islands</td>
+<td align="left">United Kingdom</td>
+<td align="right">49.372300</td>
+<td align="right">-2.36440</td>
+<td align="left">2020-05-23</td>
+<td align="right">558</td>
+<td align="right">45</td>
+<td align="right">515</td>
+<td align="right">-2</td>
+<td align="left">Europe</td>
+<td align="right">-2</td>
+</tr>
+<tr class="even">
+<td align="left">Channel Islands</td>
+<td align="left">United Kingdom</td>
+<td align="right">49.372300</td>
+<td align="right">-2.36440</td>
+<td align="left">2020-05-24</td>
+<td align="right">558</td>
+<td align="right">45</td>
+<td align="right">517</td>
+<td align="right">-4</td>
+<td align="left">Europe</td>
+<td align="right">-4</td>
+</tr>
+<tr class="odd">
+<td align="left">Channel Islands</td>
+<td align="left">United Kingdom</td>
+<td align="right">49.372300</td>
+<td align="right">-2.36440</td>
+<td align="left">2020-05-25</td>
+<td align="right">559</td>
+<td align="right">45</td>
+<td align="right">517</td>
+<td align="right">-3</td>
+<td align="left">Europe</td>
+<td align="right">-3</td>
+</tr>
+<tr class="even">
+<td align="left">Channel Islands</td>
+<td align="left">United Kingdom</td>
+<td align="right">49.372300</td>
+<td align="right">-2.36440</td>
+<td align="left">2020-05-30</td>
+<td align="right">560</td>
+<td align="right">45</td>
+<td align="right">525</td>
+<td align="right">-10</td>
+<td align="left">Europe</td>
+<td align="right">-10</td>
+</tr>
+<tr class="odd">
+<td align="left">Channel Islands</td>
+<td align="left">United Kingdom</td>
+<td align="right">49.372300</td>
+<td align="right">-2.36440</td>
+<td align="left">2020-05-31</td>
+<td align="right">560</td>
+<td align="right">45</td>
+<td align="right">528</td>
+<td align="right">-13</td>
+<td align="left">Europe</td>
+<td align="right">-13</td>
+</tr>
+<tr class="even">
+<td align="left">Channel Islands</td>
+<td align="left">United Kingdom</td>
+<td align="right">49.372300</td>
+<td align="right">-2.36440</td>
+<td align="left">2020-06-01</td>
+<td align="right">560</td>
+<td align="right">45</td>
+<td align="right">528</td>
+<td align="right">-13</td>
+<td align="left">Europe</td>
+<td align="right">-13</td>
+</tr>
+<tr class="odd">
+<td align="left">Channel Islands</td>
+<td align="left">United Kingdom</td>
+<td align="right">49.372300</td>
+<td align="right">-2.36440</td>
+<td align="left">2020-06-02</td>
+<td align="right">560</td>
+<td align="right">46</td>
+<td align="right">528</td>
+<td align="right">-14</td>
+<td align="left">Europe</td>
+<td align="right">-14</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.195900</td>
+<td align="right">109.74530</td>
+<td align="left">2020-03-24</td>
+<td align="right">168</td>
+<td align="right">6</td>
+<td align="right">168</td>
+<td align="right">-6</td>
+<td align="left">Western Pacific</td>
+<td align="right">-6</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.195900</td>
+<td align="right">109.74530</td>
+<td align="left">2020-03-25</td>
+<td align="right">168</td>
+<td align="right">6</td>
+<td align="right">168</td>
+<td align="right">-6</td>
+<td align="left">Western Pacific</td>
+<td align="right">-6</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.195900</td>
+<td align="right">109.74530</td>
+<td align="left">2020-03-26</td>
+<td align="right">168</td>
+<td align="right">6</td>
+<td align="right">168</td>
+<td align="right">-6</td>
+<td align="left">Western Pacific</td>
+<td align="right">-6</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.195900</td>
+<td align="right">109.74530</td>
+<td align="left">2020-03-27</td>
+<td align="right">168</td>
+<td align="right">6</td>
+<td align="right">168</td>
+<td align="right">-6</td>
+<td align="left">Western Pacific</td>
+<td align="right">-6</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.195900</td>
+<td align="right">109.74530</td>
+<td align="left">2020-03-28</td>
+<td align="right">168</td>
+<td align="right">6</td>
+<td align="right">168</td>
+<td align="right">-6</td>
+<td align="left">Western Pacific</td>
+<td align="right">-6</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.195900</td>
+<td align="right">109.74530</td>
+<td align="left">2020-03-29</td>
+<td align="right">168</td>
+<td align="right">6</td>
+<td align="right">168</td>
+<td align="right">-6</td>
+<td align="left">Western Pacific</td>
+<td align="right">-6</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.195900</td>
+<td align="right">109.74530</td>
+<td align="left">2020-03-30</td>
+<td align="right">168</td>
+<td align="right">6</td>
+<td align="right">168</td>
+<td align="right">-6</td>
+<td align="left">Western Pacific</td>
+<td align="right">-6</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.195900</td>
+<td align="right">109.74530</td>
+<td align="left">2020-03-31</td>
+<td align="right">168</td>
+<td align="right">6</td>
+<td align="right">168</td>
+<td align="right">-6</td>
+<td align="left">Western Pacific</td>
+<td align="right">-6</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.195900</td>
+<td align="right">109.74530</td>
+<td align="left">2020-04-01</td>
+<td align="right">168</td>
+<td align="right">6</td>
+<td align="right">168</td>
+<td align="right">-6</td>
+<td align="left">Western Pacific</td>
+<td align="right">-6</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>datos %&gt;%
+  filter(Provincia_Estado == &quot;Hainan&quot;) %&gt;%
+  kable()</code></pre>
+<table>
+<colgroup>
+<col width="11%" />
+<col width="7%" />
+<col width="5%" />
+<col width="5%" />
+<col width="7%" />
+<col width="11%" />
+<col width="9%" />
+<col width="11%" />
+<col width="9%" />
+<col width="10%" />
+<col width="9%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Provincia_Estado</th>
+<th align="left">Pais_Region</th>
+<th align="right">Latitud</th>
+<th align="right">Longitud</th>
+<th align="left">Fecha</th>
+<th align="right">Casos_Confirmados</th>
+<th align="right">Casos_Muertos</th>
+<th align="right">Casos_Recuperados</th>
+<th align="right">Casos Activos</th>
+<th align="left">WHO_Region</th>
+<th align="right">Casos_Enfermos</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-01-22</td>
+<td align="right">4</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">4</td>
+<td align="left">Western Pacific</td>
+<td align="right">4</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-01-23</td>
+<td align="right">5</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">5</td>
+<td align="left">Western Pacific</td>
+<td align="right">5</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-01-24</td>
+<td align="right">8</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">8</td>
+<td align="left">Western Pacific</td>
+<td align="right">8</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-01-25</td>
+<td align="right">19</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">19</td>
+<td align="left">Western Pacific</td>
+<td align="right">19</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-01-26</td>
+<td align="right">22</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">22</td>
+<td align="left">Western Pacific</td>
+<td align="right">22</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-01-27</td>
+<td align="right">33</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">32</td>
+<td align="left">Western Pacific</td>
+<td align="right">32</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-01-28</td>
+<td align="right">40</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">39</td>
+<td align="left">Western Pacific</td>
+<td align="right">39</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-01-29</td>
+<td align="right">43</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">42</td>
+<td align="left">Western Pacific</td>
+<td align="right">42</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-01-30</td>
+<td align="right">46</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">44</td>
+<td align="left">Western Pacific</td>
+<td align="right">44</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-01-31</td>
+<td align="right">52</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">50</td>
+<td align="left">Western Pacific</td>
+<td align="right">50</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-02-01</td>
+<td align="right">62</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">60</td>
+<td align="left">Western Pacific</td>
+<td align="right">60</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-02-02</td>
+<td align="right">64</td>
+<td align="right">1</td>
+<td align="right">4</td>
+<td align="right">59</td>
+<td align="left">Western Pacific</td>
+<td align="right">59</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-02-03</td>
+<td align="right">72</td>
+<td align="right">1</td>
+<td align="right">4</td>
+<td align="right">67</td>
+<td align="left">Western Pacific</td>
+<td align="right">67</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-02-04</td>
+<td align="right">80</td>
+<td align="right">1</td>
+<td align="right">5</td>
+<td align="right">74</td>
+<td align="left">Western Pacific</td>
+<td align="right">74</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-02-05</td>
+<td align="right">99</td>
+<td align="right">1</td>
+<td align="right">5</td>
+<td align="right">93</td>
+<td align="left">Western Pacific</td>
+<td align="right">93</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-02-06</td>
+<td align="right">106</td>
+<td align="right">1</td>
+<td align="right">8</td>
+<td align="right">97</td>
+<td align="left">Western Pacific</td>
+<td align="right">97</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-02-07</td>
+<td align="right">117</td>
+<td align="right">2</td>
+<td align="right">10</td>
+<td align="right">105</td>
+<td align="left">Western Pacific</td>
+<td align="right">105</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-02-08</td>
+<td align="right">124</td>
+<td align="right">2</td>
+<td align="right">14</td>
+<td align="right">108</td>
+<td align="left">Western Pacific</td>
+<td align="right">108</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-02-09</td>
+<td align="right">131</td>
+<td align="right">3</td>
+<td align="right">19</td>
+<td align="right">109</td>
+<td align="left">Western Pacific</td>
+<td align="right">109</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-02-10</td>
+<td align="right">138</td>
+<td align="right">3</td>
+<td align="right">19</td>
+<td align="right">116</td>
+<td align="left">Western Pacific</td>
+<td align="right">116</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-02-11</td>
+<td align="right">144</td>
+<td align="right">3</td>
+<td align="right">20</td>
+<td align="right">121</td>
+<td align="left">Western Pacific</td>
+<td align="right">121</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-02-12</td>
+<td align="right">157</td>
+<td align="right">4</td>
+<td align="right">27</td>
+<td align="right">126</td>
+<td align="left">Western Pacific</td>
+<td align="right">126</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-02-13</td>
+<td align="right">157</td>
+<td align="right">4</td>
+<td align="right">30</td>
+<td align="right">123</td>
+<td align="left">Western Pacific</td>
+<td align="right">123</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-02-14</td>
+<td align="right">159</td>
+<td align="right">4</td>
+<td align="right">43</td>
+<td align="right">112</td>
+<td align="left">Western Pacific</td>
+<td align="right">112</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-02-15</td>
+<td align="right">162</td>
+<td align="right">4</td>
+<td align="right">39</td>
+<td align="right">119</td>
+<td align="left">Western Pacific</td>
+<td align="right">119</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-02-16</td>
+<td align="right">162</td>
+<td align="right">4</td>
+<td align="right">52</td>
+<td align="right">106</td>
+<td align="left">Western Pacific</td>
+<td align="right">106</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-02-17</td>
+<td align="right">163</td>
+<td align="right">4</td>
+<td align="right">59</td>
+<td align="right">100</td>
+<td align="left">Western Pacific</td>
+<td align="right">100</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-02-18</td>
+<td align="right">163</td>
+<td align="right">4</td>
+<td align="right">79</td>
+<td align="right">80</td>
+<td align="left">Western Pacific</td>
+<td align="right">80</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-02-19</td>
+<td align="right">168</td>
+<td align="right">4</td>
+<td align="right">84</td>
+<td align="right">80</td>
+<td align="left">Western Pacific</td>
+<td align="right">80</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-02-20</td>
+<td align="right">168</td>
+<td align="right">4</td>
+<td align="right">86</td>
+<td align="right">78</td>
+<td align="left">Western Pacific</td>
+<td align="right">78</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-02-21</td>
+<td align="right">168</td>
+<td align="right">4</td>
+<td align="right">95</td>
+<td align="right">69</td>
+<td align="left">Western Pacific</td>
+<td align="right">69</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-02-22</td>
+<td align="right">168</td>
+<td align="right">4</td>
+<td align="right">104</td>
+<td align="right">60</td>
+<td align="left">Western Pacific</td>
+<td align="right">60</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-02-23</td>
+<td align="right">168</td>
+<td align="right">5</td>
+<td align="right">106</td>
+<td align="right">57</td>
+<td align="left">Western Pacific</td>
+<td align="right">57</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-02-24</td>
+<td align="right">168</td>
+<td align="right">5</td>
+<td align="right">116</td>
+<td align="right">47</td>
+<td align="left">Western Pacific</td>
+<td align="right">47</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-02-25</td>
+<td align="right">168</td>
+<td align="right">5</td>
+<td align="right">124</td>
+<td align="right">39</td>
+<td align="left">Western Pacific</td>
+<td align="right">39</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-02-26</td>
+<td align="right">168</td>
+<td align="right">5</td>
+<td align="right">129</td>
+<td align="right">34</td>
+<td align="left">Western Pacific</td>
+<td align="right">34</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-02-27</td>
+<td align="right">168</td>
+<td align="right">5</td>
+<td align="right">131</td>
+<td align="right">32</td>
+<td align="left">Western Pacific</td>
+<td align="right">32</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-02-28</td>
+<td align="right">168</td>
+<td align="right">5</td>
+<td align="right">133</td>
+<td align="right">30</td>
+<td align="left">Western Pacific</td>
+<td align="right">30</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-02-29</td>
+<td align="right">168</td>
+<td align="right">5</td>
+<td align="right">148</td>
+<td align="right">15</td>
+<td align="left">Western Pacific</td>
+<td align="right">15</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-03-01</td>
+<td align="right">168</td>
+<td align="right">5</td>
+<td align="right">149</td>
+<td align="right">14</td>
+<td align="left">Western Pacific</td>
+<td align="right">14</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-03-02</td>
+<td align="right">168</td>
+<td align="right">5</td>
+<td align="right">151</td>
+<td align="right">12</td>
+<td align="left">Western Pacific</td>
+<td align="right">12</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-03-03</td>
+<td align="right">168</td>
+<td align="right">5</td>
+<td align="right">155</td>
+<td align="right">8</td>
+<td align="left">Western Pacific</td>
+<td align="right">8</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-03-04</td>
+<td align="right">168</td>
+<td align="right">5</td>
+<td align="right">158</td>
+<td align="right">5</td>
+<td align="left">Western Pacific</td>
+<td align="right">5</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-03-05</td>
+<td align="right">168</td>
+<td align="right">6</td>
+<td align="right">158</td>
+<td align="right">4</td>
+<td align="left">Western Pacific</td>
+<td align="right">4</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-03-06</td>
+<td align="right">168</td>
+<td align="right">6</td>
+<td align="right">158</td>
+<td align="right">4</td>
+<td align="left">Western Pacific</td>
+<td align="right">4</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-03-07</td>
+<td align="right">168</td>
+<td align="right">6</td>
+<td align="right">158</td>
+<td align="right">4</td>
+<td align="left">Western Pacific</td>
+<td align="right">4</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-03-08</td>
+<td align="right">168</td>
+<td align="right">6</td>
+<td align="right">159</td>
+<td align="right">3</td>
+<td align="left">Western Pacific</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-03-09</td>
+<td align="right">168</td>
+<td align="right">6</td>
+<td align="right">159</td>
+<td align="right">3</td>
+<td align="left">Western Pacific</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-03-10</td>
+<td align="right">168</td>
+<td align="right">6</td>
+<td align="right">159</td>
+<td align="right">3</td>
+<td align="left">Western Pacific</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-03-11</td>
+<td align="right">168</td>
+<td align="right">6</td>
+<td align="right">159</td>
+<td align="right">3</td>
+<td align="left">Western Pacific</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-03-12</td>
+<td align="right">168</td>
+<td align="right">6</td>
+<td align="right">160</td>
+<td align="right">2</td>
+<td align="left">Western Pacific</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-03-13</td>
+<td align="right">168</td>
+<td align="right">6</td>
+<td align="right">160</td>
+<td align="right">2</td>
+<td align="left">Western Pacific</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-03-14</td>
+<td align="right">168</td>
+<td align="right">6</td>
+<td align="right">160</td>
+<td align="right">2</td>
+<td align="left">Western Pacific</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-03-15</td>
+<td align="right">168</td>
+<td align="right">6</td>
+<td align="right">160</td>
+<td align="right">2</td>
+<td align="left">Western Pacific</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-03-16</td>
+<td align="right">168</td>
+<td align="right">6</td>
+<td align="right">161</td>
+<td align="right">1</td>
+<td align="left">Western Pacific</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-03-17</td>
+<td align="right">168</td>
+<td align="right">6</td>
+<td align="right">161</td>
+<td align="right">1</td>
+<td align="left">Western Pacific</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-03-18</td>
+<td align="right">168</td>
+<td align="right">6</td>
+<td align="right">161</td>
+<td align="right">1</td>
+<td align="left">Western Pacific</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-03-19</td>
+<td align="right">168</td>
+<td align="right">6</td>
+<td align="right">161</td>
+<td align="right">1</td>
+<td align="left">Western Pacific</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-03-20</td>
+<td align="right">168</td>
+<td align="right">6</td>
+<td align="right">161</td>
+<td align="right">1</td>
+<td align="left">Western Pacific</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-03-21</td>
+<td align="right">168</td>
+<td align="right">6</td>
+<td align="right">161</td>
+<td align="right">1</td>
+<td align="left">Western Pacific</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-03-22</td>
+<td align="right">168</td>
+<td align="right">6</td>
+<td align="right">161</td>
+<td align="right">1</td>
+<td align="left">Western Pacific</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-03-23</td>
+<td align="right">168</td>
+<td align="right">6</td>
+<td align="right">161</td>
+<td align="right">1</td>
+<td align="left">Western Pacific</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-03-24</td>
+<td align="right">168</td>
+<td align="right">6</td>
+<td align="right">168</td>
+<td align="right">-6</td>
+<td align="left">Western Pacific</td>
+<td align="right">-6</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-03-25</td>
+<td align="right">168</td>
+<td align="right">6</td>
+<td align="right">168</td>
+<td align="right">-6</td>
+<td align="left">Western Pacific</td>
+<td align="right">-6</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-03-26</td>
+<td align="right">168</td>
+<td align="right">6</td>
+<td align="right">168</td>
+<td align="right">-6</td>
+<td align="left">Western Pacific</td>
+<td align="right">-6</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-03-27</td>
+<td align="right">168</td>
+<td align="right">6</td>
+<td align="right">168</td>
+<td align="right">-6</td>
+<td align="left">Western Pacific</td>
+<td align="right">-6</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-03-28</td>
+<td align="right">168</td>
+<td align="right">6</td>
+<td align="right">168</td>
+<td align="right">-6</td>
+<td align="left">Western Pacific</td>
+<td align="right">-6</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-03-29</td>
+<td align="right">168</td>
+<td align="right">6</td>
+<td align="right">168</td>
+<td align="right">-6</td>
+<td align="left">Western Pacific</td>
+<td align="right">-6</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-03-30</td>
+<td align="right">168</td>
+<td align="right">6</td>
+<td align="right">168</td>
+<td align="right">-6</td>
+<td align="left">Western Pacific</td>
+<td align="right">-6</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-03-31</td>
+<td align="right">168</td>
+<td align="right">6</td>
+<td align="right">168</td>
+<td align="right">-6</td>
+<td align="left">Western Pacific</td>
+<td align="right">-6</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-04-01</td>
+<td align="right">168</td>
+<td align="right">6</td>
+<td align="right">168</td>
+<td align="right">-6</td>
+<td align="left">Western Pacific</td>
+<td align="right">-6</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-04-02</td>
+<td align="right">168</td>
+<td align="right">6</td>
+<td align="right">162</td>
+<td align="right">0</td>
+<td align="left">Western Pacific</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-04-03</td>
+<td align="right">168</td>
+<td align="right">6</td>
+<td align="right">162</td>
+<td align="right">0</td>
+<td align="left">Western Pacific</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-04-04</td>
+<td align="right">168</td>
+<td align="right">6</td>
+<td align="right">162</td>
+<td align="right">0</td>
+<td align="left">Western Pacific</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-04-05</td>
+<td align="right">168</td>
+<td align="right">6</td>
+<td align="right">162</td>
+<td align="right">0</td>
+<td align="left">Western Pacific</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-04-06</td>
+<td align="right">168</td>
+<td align="right">6</td>
+<td align="right">162</td>
+<td align="right">0</td>
+<td align="left">Western Pacific</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-04-07</td>
+<td align="right">168</td>
+<td align="right">6</td>
+<td align="right">162</td>
+<td align="right">0</td>
+<td align="left">Western Pacific</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-04-08</td>
+<td align="right">168</td>
+<td align="right">6</td>
+<td align="right">162</td>
+<td align="right">0</td>
+<td align="left">Western Pacific</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-04-09</td>
+<td align="right">168</td>
+<td align="right">6</td>
+<td align="right">162</td>
+<td align="right">0</td>
+<td align="left">Western Pacific</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-04-10</td>
+<td align="right">168</td>
+<td align="right">6</td>
+<td align="right">162</td>
+<td align="right">0</td>
+<td align="left">Western Pacific</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-04-11</td>
+<td align="right">168</td>
+<td align="right">6</td>
+<td align="right">162</td>
+<td align="right">0</td>
+<td align="left">Western Pacific</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-04-12</td>
+<td align="right">168</td>
+<td align="right">6</td>
+<td align="right">162</td>
+<td align="right">0</td>
+<td align="left">Western Pacific</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-04-13</td>
+<td align="right">168</td>
+<td align="right">6</td>
+<td align="right">162</td>
+<td align="right">0</td>
+<td align="left">Western Pacific</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-04-14</td>
+<td align="right">168</td>
+<td align="right">6</td>
+<td align="right">162</td>
+<td align="right">0</td>
+<td align="left">Western Pacific</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-04-15</td>
+<td align="right">168</td>
+<td align="right">6</td>
+<td align="right">162</td>
+<td align="right">0</td>
+<td align="left">Western Pacific</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-04-16</td>
+<td align="right">168</td>
+<td align="right">6</td>
+<td align="right">162</td>
+<td align="right">0</td>
+<td align="left">Western Pacific</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-04-17</td>
+<td align="right">168</td>
+<td align="right">6</td>
+<td align="right">162</td>
+<td align="right">0</td>
+<td align="left">Western Pacific</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-04-18</td>
+<td align="right">168</td>
+<td align="right">6</td>
+<td align="right">162</td>
+<td align="right">0</td>
+<td align="left">Western Pacific</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-04-19</td>
+<td align="right">168</td>
+<td align="right">6</td>
+<td align="right">162</td>
+<td align="right">0</td>
+<td align="left">Western Pacific</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-04-20</td>
+<td align="right">168</td>
+<td align="right">6</td>
+<td align="right">162</td>
+<td align="right">0</td>
+<td align="left">Western Pacific</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-04-21</td>
+<td align="right">168</td>
+<td align="right">6</td>
+<td align="right">162</td>
+<td align="right">0</td>
+<td align="left">Western Pacific</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-04-22</td>
+<td align="right">168</td>
+<td align="right">6</td>
+<td align="right">162</td>
+<td align="right">0</td>
+<td align="left">Western Pacific</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-04-23</td>
+<td align="right">168</td>
+<td align="right">6</td>
+<td align="right">162</td>
+<td align="right">0</td>
+<td align="left">Western Pacific</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-04-24</td>
+<td align="right">168</td>
+<td align="right">6</td>
+<td align="right">162</td>
+<td align="right">0</td>
+<td align="left">Western Pacific</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-04-25</td>
+<td align="right">168</td>
+<td align="right">6</td>
+<td align="right">162</td>
+<td align="right">0</td>
+<td align="left">Western Pacific</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-04-26</td>
+<td align="right">168</td>
+<td align="right">6</td>
+<td align="right">162</td>
+<td align="right">0</td>
+<td align="left">Western Pacific</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-04-27</td>
+<td align="right">168</td>
+<td align="right">6</td>
+<td align="right">162</td>
+<td align="right">0</td>
+<td align="left">Western Pacific</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-04-28</td>
+<td align="right">168</td>
+<td align="right">6</td>
+<td align="right">162</td>
+<td align="right">0</td>
+<td align="left">Western Pacific</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-04-29</td>
+<td align="right">168</td>
+<td align="right">6</td>
+<td align="right">162</td>
+<td align="right">0</td>
+<td align="left">Western Pacific</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-04-30</td>
+<td align="right">168</td>
+<td align="right">6</td>
+<td align="right">162</td>
+<td align="right">0</td>
+<td align="left">Western Pacific</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-05-01</td>
+<td align="right">168</td>
+<td align="right">6</td>
+<td align="right">162</td>
+<td align="right">0</td>
+<td align="left">Western Pacific</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-05-02</td>
+<td align="right">168</td>
+<td align="right">6</td>
+<td align="right">162</td>
+<td align="right">0</td>
+<td align="left">Western Pacific</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-05-03</td>
+<td align="right">168</td>
+<td align="right">6</td>
+<td align="right">162</td>
+<td align="right">0</td>
+<td align="left">Western Pacific</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-05-04</td>
+<td align="right">168</td>
+<td align="right">6</td>
+<td align="right">162</td>
+<td align="right">0</td>
+<td align="left">Western Pacific</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-05-05</td>
+<td align="right">168</td>
+<td align="right">6</td>
+<td align="right">162</td>
+<td align="right">0</td>
+<td align="left">Western Pacific</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-05-06</td>
+<td align="right">168</td>
+<td align="right">6</td>
+<td align="right">162</td>
+<td align="right">0</td>
+<td align="left">Western Pacific</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-05-07</td>
+<td align="right">168</td>
+<td align="right">6</td>
+<td align="right">162</td>
+<td align="right">0</td>
+<td align="left">Western Pacific</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-05-08</td>
+<td align="right">168</td>
+<td align="right">6</td>
+<td align="right">162</td>
+<td align="right">0</td>
+<td align="left">Western Pacific</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-05-09</td>
+<td align="right">168</td>
+<td align="right">6</td>
+<td align="right">162</td>
+<td align="right">0</td>
+<td align="left">Western Pacific</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-05-10</td>
+<td align="right">168</td>
+<td align="right">6</td>
+<td align="right">162</td>
+<td align="right">0</td>
+<td align="left">Western Pacific</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-05-11</td>
+<td align="right">168</td>
+<td align="right">6</td>
+<td align="right">162</td>
+<td align="right">0</td>
+<td align="left">Western Pacific</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-05-12</td>
+<td align="right">168</td>
+<td align="right">6</td>
+<td align="right">162</td>
+<td align="right">0</td>
+<td align="left">Western Pacific</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-05-13</td>
+<td align="right">168</td>
+<td align="right">6</td>
+<td align="right">162</td>
+<td align="right">0</td>
+<td align="left">Western Pacific</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-05-14</td>
+<td align="right">168</td>
+<td align="right">6</td>
+<td align="right">162</td>
+<td align="right">0</td>
+<td align="left">Western Pacific</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-05-15</td>
+<td align="right">169</td>
+<td align="right">6</td>
+<td align="right">162</td>
+<td align="right">1</td>
+<td align="left">Western Pacific</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-05-16</td>
+<td align="right">169</td>
+<td align="right">6</td>
+<td align="right">162</td>
+<td align="right">1</td>
+<td align="left">Western Pacific</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-05-17</td>
+<td align="right">169</td>
+<td align="right">6</td>
+<td align="right">162</td>
+<td align="right">1</td>
+<td align="left">Western Pacific</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-05-18</td>
+<td align="right">169</td>
+<td align="right">6</td>
+<td align="right">162</td>
+<td align="right">1</td>
+<td align="left">Western Pacific</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-05-19</td>
+<td align="right">169</td>
+<td align="right">6</td>
+<td align="right">162</td>
+<td align="right">1</td>
+<td align="left">Western Pacific</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-05-20</td>
+<td align="right">169</td>
+<td align="right">6</td>
+<td align="right">162</td>
+<td align="right">1</td>
+<td align="left">Western Pacific</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-05-21</td>
+<td align="right">169</td>
+<td align="right">6</td>
+<td align="right">162</td>
+<td align="right">1</td>
+<td align="left">Western Pacific</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-05-22</td>
+<td align="right">169</td>
+<td align="right">6</td>
+<td align="right">162</td>
+<td align="right">1</td>
+<td align="left">Western Pacific</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-05-23</td>
+<td align="right">169</td>
+<td align="right">6</td>
+<td align="right">162</td>
+<td align="right">1</td>
+<td align="left">Western Pacific</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-05-24</td>
+<td align="right">169</td>
+<td align="right">6</td>
+<td align="right">162</td>
+<td align="right">1</td>
+<td align="left">Western Pacific</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-05-25</td>
+<td align="right">169</td>
+<td align="right">6</td>
+<td align="right">162</td>
+<td align="right">1</td>
+<td align="left">Western Pacific</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-05-26</td>
+<td align="right">169</td>
+<td align="right">6</td>
+<td align="right">162</td>
+<td align="right">1</td>
+<td align="left">Western Pacific</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-05-27</td>
+<td align="right">169</td>
+<td align="right">6</td>
+<td align="right">162</td>
+<td align="right">1</td>
+<td align="left">Western Pacific</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-05-28</td>
+<td align="right">169</td>
+<td align="right">6</td>
+<td align="right">162</td>
+<td align="right">1</td>
+<td align="left">Western Pacific</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-05-29</td>
+<td align="right">169</td>
+<td align="right">6</td>
+<td align="right">163</td>
+<td align="right">0</td>
+<td align="left">Western Pacific</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-05-30</td>
+<td align="right">169</td>
+<td align="right">6</td>
+<td align="right">163</td>
+<td align="right">0</td>
+<td align="left">Western Pacific</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-05-31</td>
+<td align="right">169</td>
+<td align="right">6</td>
+<td align="right">163</td>
+<td align="right">0</td>
+<td align="left">Western Pacific</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-06-01</td>
+<td align="right">169</td>
+<td align="right">6</td>
+<td align="right">163</td>
+<td align="right">0</td>
+<td align="left">Western Pacific</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-06-02</td>
+<td align="right">169</td>
+<td align="right">6</td>
+<td align="right">163</td>
+<td align="right">0</td>
+<td align="left">Western Pacific</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-06-03</td>
+<td align="right">169</td>
+<td align="right">6</td>
+<td align="right">163</td>
+<td align="right">0</td>
+<td align="left">Western Pacific</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-06-04</td>
+<td align="right">169</td>
+<td align="right">6</td>
+<td align="right">163</td>
+<td align="right">0</td>
+<td align="left">Western Pacific</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-06-05</td>
+<td align="right">169</td>
+<td align="right">6</td>
+<td align="right">163</td>
+<td align="right">0</td>
+<td align="left">Western Pacific</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-06-06</td>
+<td align="right">170</td>
+<td align="right">6</td>
+<td align="right">162</td>
+<td align="right">2</td>
+<td align="left">Western Pacific</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-06-07</td>
+<td align="right">170</td>
+<td align="right">6</td>
+<td align="right">162</td>
+<td align="right">2</td>
+<td align="left">Western Pacific</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-06-08</td>
+<td align="right">170</td>
+<td align="right">6</td>
+<td align="right">162</td>
+<td align="right">2</td>
+<td align="left">Western Pacific</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-06-09</td>
+<td align="right">170</td>
+<td align="right">6</td>
+<td align="right">162</td>
+<td align="right">2</td>
+<td align="left">Western Pacific</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-06-10</td>
+<td align="right">170</td>
+<td align="right">6</td>
+<td align="right">162</td>
+<td align="right">2</td>
+<td align="left">Western Pacific</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-06-11</td>
+<td align="right">170</td>
+<td align="right">6</td>
+<td align="right">162</td>
+<td align="right">2</td>
+<td align="left">Western Pacific</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-06-12</td>
+<td align="right">171</td>
+<td align="right">6</td>
+<td align="right">162</td>
+<td align="right">3</td>
+<td align="left">Western Pacific</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-06-13</td>
+<td align="right">171</td>
+<td align="right">6</td>
+<td align="right">162</td>
+<td align="right">3</td>
+<td align="left">Western Pacific</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-06-14</td>
+<td align="right">171</td>
+<td align="right">6</td>
+<td align="right">162</td>
+<td align="right">3</td>
+<td align="left">Western Pacific</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-06-15</td>
+<td align="right">171</td>
+<td align="right">6</td>
+<td align="right">163</td>
+<td align="right">2</td>
+<td align="left">Western Pacific</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-06-16</td>
+<td align="right">171</td>
+<td align="right">6</td>
+<td align="right">163</td>
+<td align="right">2</td>
+<td align="left">Western Pacific</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-06-17</td>
+<td align="right">171</td>
+<td align="right">6</td>
+<td align="right">163</td>
+<td align="right">2</td>
+<td align="left">Western Pacific</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-06-18</td>
+<td align="right">171</td>
+<td align="right">6</td>
+<td align="right">163</td>
+<td align="right">2</td>
+<td align="left">Western Pacific</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-06-19</td>
+<td align="right">171</td>
+<td align="right">6</td>
+<td align="right">163</td>
+<td align="right">2</td>
+<td align="left">Western Pacific</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-06-20</td>
+<td align="right">171</td>
+<td align="right">6</td>
+<td align="right">163</td>
+<td align="right">2</td>
+<td align="left">Western Pacific</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-06-21</td>
+<td align="right">171</td>
+<td align="right">6</td>
+<td align="right">163</td>
+<td align="right">2</td>
+<td align="left">Western Pacific</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-06-22</td>
+<td align="right">171</td>
+<td align="right">6</td>
+<td align="right">163</td>
+<td align="right">2</td>
+<td align="left">Western Pacific</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-06-23</td>
+<td align="right">171</td>
+<td align="right">6</td>
+<td align="right">163</td>
+<td align="right">2</td>
+<td align="left">Western Pacific</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-06-24</td>
+<td align="right">171</td>
+<td align="right">6</td>
+<td align="right">163</td>
+<td align="right">2</td>
+<td align="left">Western Pacific</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-06-25</td>
+<td align="right">171</td>
+<td align="right">6</td>
+<td align="right">165</td>
+<td align="right">0</td>
+<td align="left">Western Pacific</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-06-26</td>
+<td align="right">171</td>
+<td align="right">6</td>
+<td align="right">165</td>
+<td align="right">0</td>
+<td align="left">Western Pacific</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-06-27</td>
+<td align="right">171</td>
+<td align="right">6</td>
+<td align="right">165</td>
+<td align="right">0</td>
+<td align="left">Western Pacific</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-06-28</td>
+<td align="right">171</td>
+<td align="right">6</td>
+<td align="right">165</td>
+<td align="right">0</td>
+<td align="left">Western Pacific</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-06-29</td>
+<td align="right">171</td>
+<td align="right">6</td>
+<td align="right">165</td>
+<td align="right">0</td>
+<td align="left">Western Pacific</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-06-30</td>
+<td align="right">171</td>
+<td align="right">6</td>
+<td align="right">165</td>
+<td align="right">0</td>
+<td align="left">Western Pacific</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-07-01</td>
+<td align="right">171</td>
+<td align="right">6</td>
+<td align="right">165</td>
+<td align="right">0</td>
+<td align="left">Western Pacific</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-07-02</td>
+<td align="right">171</td>
+<td align="right">6</td>
+<td align="right">165</td>
+<td align="right">0</td>
+<td align="left">Western Pacific</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-07-03</td>
+<td align="right">171</td>
+<td align="right">6</td>
+<td align="right">165</td>
+<td align="right">0</td>
+<td align="left">Western Pacific</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-07-04</td>
+<td align="right">171</td>
+<td align="right">6</td>
+<td align="right">165</td>
+<td align="right">0</td>
+<td align="left">Western Pacific</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-07-05</td>
+<td align="right">171</td>
+<td align="right">6</td>
+<td align="right">165</td>
+<td align="right">0</td>
+<td align="left">Western Pacific</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-07-06</td>
+<td align="right">171</td>
+<td align="right">6</td>
+<td align="right">165</td>
+<td align="right">0</td>
+<td align="left">Western Pacific</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-07-07</td>
+<td align="right">171</td>
+<td align="right">6</td>
+<td align="right">165</td>
+<td align="right">0</td>
+<td align="left">Western Pacific</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-07-08</td>
+<td align="right">171</td>
+<td align="right">6</td>
+<td align="right">165</td>
+<td align="right">0</td>
+<td align="left">Western Pacific</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-07-09</td>
+<td align="right">171</td>
+<td align="right">6</td>
+<td align="right">165</td>
+<td align="right">0</td>
+<td align="left">Western Pacific</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-07-10</td>
+<td align="right">171</td>
+<td align="right">6</td>
+<td align="right">165</td>
+<td align="right">0</td>
+<td align="left">Western Pacific</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-07-11</td>
+<td align="right">171</td>
+<td align="right">6</td>
+<td align="right">165</td>
+<td align="right">0</td>
+<td align="left">Western Pacific</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-07-12</td>
+<td align="right">171</td>
+<td align="right">6</td>
+<td align="right">165</td>
+<td align="right">0</td>
+<td align="left">Western Pacific</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-07-13</td>
+<td align="right">171</td>
+<td align="right">6</td>
+<td align="right">165</td>
+<td align="right">0</td>
+<td align="left">Western Pacific</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-07-14</td>
+<td align="right">171</td>
+<td align="right">6</td>
+<td align="right">165</td>
+<td align="right">0</td>
+<td align="left">Western Pacific</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-07-15</td>
+<td align="right">171</td>
+<td align="right">6</td>
+<td align="right">165</td>
+<td align="right">0</td>
+<td align="left">Western Pacific</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-07-16</td>
+<td align="right">171</td>
+<td align="right">6</td>
+<td align="right">165</td>
+<td align="right">0</td>
+<td align="left">Western Pacific</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-07-17</td>
+<td align="right">171</td>
+<td align="right">6</td>
+<td align="right">165</td>
+<td align="right">0</td>
+<td align="left">Western Pacific</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-07-18</td>
+<td align="right">171</td>
+<td align="right">6</td>
+<td align="right">165</td>
+<td align="right">0</td>
+<td align="left">Western Pacific</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-07-19</td>
+<td align="right">171</td>
+<td align="right">6</td>
+<td align="right">165</td>
+<td align="right">0</td>
+<td align="left">Western Pacific</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-07-20</td>
+<td align="right">171</td>
+<td align="right">6</td>
+<td align="right">165</td>
+<td align="right">0</td>
+<td align="left">Western Pacific</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-07-21</td>
+<td align="right">171</td>
+<td align="right">6</td>
+<td align="right">165</td>
+<td align="right">0</td>
+<td align="left">Western Pacific</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-07-22</td>
+<td align="right">171</td>
+<td align="right">6</td>
+<td align="right">165</td>
+<td align="right">0</td>
+<td align="left">Western Pacific</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-07-23</td>
+<td align="right">171</td>
+<td align="right">6</td>
+<td align="right">165</td>
+<td align="right">0</td>
+<td align="left">Western Pacific</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-07-24</td>
+<td align="right">171</td>
+<td align="right">6</td>
+<td align="right">165</td>
+<td align="right">0</td>
+<td align="left">Western Pacific</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-07-25</td>
+<td align="right">171</td>
+<td align="right">6</td>
+<td align="right">165</td>
+<td align="right">0</td>
+<td align="left">Western Pacific</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-07-26</td>
+<td align="right">171</td>
+<td align="right">6</td>
+<td align="right">165</td>
+<td align="right">0</td>
+<td align="left">Western Pacific</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-07-27</td>
+<td align="right">171</td>
+<td align="right">6</td>
+<td align="right">165</td>
+<td align="right">0</td>
+<td align="left">Western Pacific</td>
+<td align="right">0</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code># Corregir datos anómalos y sin sentido
+datos %&gt;%
+  filter(Provincia_Estado == &quot;Hainan&quot;, Casos_Enfermos &lt; 0) %&gt;%
+  mutate(Casos_Recuperados = Casos_Recuperados + Casos_Enfermos,
+         Casos_Enfermos = 0) %&gt;%
+  kable()</code></pre>
+<table>
+<colgroup>
+<col width="11%" />
+<col width="7%" />
+<col width="5%" />
+<col width="5%" />
+<col width="7%" />
+<col width="11%" />
+<col width="9%" />
+<col width="11%" />
+<col width="9%" />
+<col width="10%" />
+<col width="9%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Provincia_Estado</th>
+<th align="left">Pais_Region</th>
+<th align="right">Latitud</th>
+<th align="right">Longitud</th>
+<th align="left">Fecha</th>
+<th align="right">Casos_Confirmados</th>
+<th align="right">Casos_Muertos</th>
+<th align="right">Casos_Recuperados</th>
+<th align="right">Casos Activos</th>
+<th align="left">WHO_Region</th>
+<th align="right">Casos_Enfermos</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-03-24</td>
+<td align="right">168</td>
+<td align="right">6</td>
+<td align="right">162</td>
+<td align="right">-6</td>
+<td align="left">Western Pacific</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-03-25</td>
+<td align="right">168</td>
+<td align="right">6</td>
+<td align="right">162</td>
+<td align="right">-6</td>
+<td align="left">Western Pacific</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-03-26</td>
+<td align="right">168</td>
+<td align="right">6</td>
+<td align="right">162</td>
+<td align="right">-6</td>
+<td align="left">Western Pacific</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-03-27</td>
+<td align="right">168</td>
+<td align="right">6</td>
+<td align="right">162</td>
+<td align="right">-6</td>
+<td align="left">Western Pacific</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-03-28</td>
+<td align="right">168</td>
+<td align="right">6</td>
+<td align="right">162</td>
+<td align="right">-6</td>
+<td align="left">Western Pacific</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-03-29</td>
+<td align="right">168</td>
+<td align="right">6</td>
+<td align="right">162</td>
+<td align="right">-6</td>
+<td align="left">Western Pacific</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-03-30</td>
+<td align="right">168</td>
+<td align="right">6</td>
+<td align="right">162</td>
+<td align="right">-6</td>
+<td align="left">Western Pacific</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-03-31</td>
+<td align="right">168</td>
+<td align="right">6</td>
+<td align="right">162</td>
+<td align="right">-6</td>
+<td align="left">Western Pacific</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Hainan</td>
+<td align="left">China</td>
+<td align="right">19.1959</td>
+<td align="right">109.7453</td>
+<td align="left">2020-04-01</td>
+<td align="right">168</td>
+<td align="right">6</td>
+<td align="right">162</td>
+<td align="right">-6</td>
+<td align="left">Western Pacific</td>
+<td align="right">0</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="análisis-geográfico" class="section level1">
+<h1>Análisis geográfico</h1>
+<pre class="r"><code>#datos_europa = datos[datos$Latitud &gt; 38 &amp; datos$Longitud &gt; -25 &amp; datos$Longitud &lt; 30 , ]
+datos_europa = datos %&gt;%
+  filter(Latitud &gt; 38, between(Longitud, -25, 30))
+
+nrow(datos_europa)</code></pre>
+<pre><code>## [1] 8460</code></pre>
+<pre class="r"><code>table(datos_europa$Pais_Region) %&gt;%
+  as.data.frame() %&gt;%
+  filter(Freq &gt; 0) %&gt;%
+  kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Var1</th>
+<th align="right">Freq</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Albania</td>
+<td align="right">188</td>
+</tr>
+<tr class="even">
+<td align="left">Andorra</td>
+<td align="right">188</td>
+</tr>
+<tr class="odd">
+<td align="left">Austria</td>
+<td align="right">188</td>
+</tr>
+<tr class="even">
+<td align="left">Belarus</td>
+<td align="right">188</td>
+</tr>
+<tr class="odd">
+<td align="left">Belgium</td>
+<td align="right">188</td>
+</tr>
+<tr class="even">
+<td align="left">Bosnia and Herzegovina</td>
+<td align="right">188</td>
+</tr>
+<tr class="odd">
+<td align="left">Bulgaria</td>
+<td align="right">188</td>
+</tr>
+<tr class="even">
+<td align="left">Croatia</td>
+<td align="right">188</td>
+</tr>
+<tr class="odd">
+<td align="left">Czechia</td>
+<td align="right">188</td>
+</tr>
+<tr class="even">
+<td align="left">Denmark</td>
+<td align="right">376</td>
+</tr>
+<tr class="odd">
+<td align="left">Estonia</td>
+<td align="right">188</td>
+</tr>
+<tr class="even">
+<td align="left">Finland</td>
+<td align="right">188</td>
+</tr>
+<tr class="odd">
+<td align="left">France</td>
+<td align="right">188</td>
+</tr>
+<tr class="even">
+<td align="left">Germany</td>
+<td align="right">188</td>
+</tr>
+<tr class="odd">
+<td align="left">Greece</td>
+<td align="right">188</td>
+</tr>
+<tr class="even">
+<td align="left">Holy See</td>
+<td align="right">188</td>
+</tr>
+<tr class="odd">
+<td align="left">Hungary</td>
+<td align="right">188</td>
+</tr>
+<tr class="even">
+<td align="left">Iceland</td>
+<td align="right">188</td>
+</tr>
+<tr class="odd">
+<td align="left">Ireland</td>
+<td align="right">188</td>
+</tr>
+<tr class="even">
+<td align="left">Italy</td>
+<td align="right">188</td>
+</tr>
+<tr class="odd">
+<td align="left">Kosovo</td>
+<td align="right">188</td>
+</tr>
+<tr class="even">
+<td align="left">Latvia</td>
+<td align="right">188</td>
+</tr>
+<tr class="odd">
+<td align="left">Liechtenstein</td>
+<td align="right">188</td>
+</tr>
+<tr class="even">
+<td align="left">Lithuania</td>
+<td align="right">188</td>
+</tr>
+<tr class="odd">
+<td align="left">Luxembourg</td>
+<td align="right">188</td>
+</tr>
+<tr class="even">
+<td align="left">Moldova</td>
+<td align="right">188</td>
+</tr>
+<tr class="odd">
+<td align="left">Monaco</td>
+<td align="right">188</td>
+</tr>
+<tr class="even">
+<td align="left">Montenegro</td>
+<td align="right">188</td>
+</tr>
+<tr class="odd">
+<td align="left">Netherlands</td>
+<td align="right">188</td>
+</tr>
+<tr class="even">
+<td align="left">North Macedonia</td>
+<td align="right">188</td>
+</tr>
+<tr class="odd">
+<td align="left">Norway</td>
+<td align="right">188</td>
+</tr>
+<tr class="even">
+<td align="left">Poland</td>
+<td align="right">188</td>
+</tr>
+<tr class="odd">
+<td align="left">Portugal</td>
+<td align="right">188</td>
+</tr>
+<tr class="even">
+<td align="left">Romania</td>
+<td align="right">188</td>
+</tr>
+<tr class="odd">
+<td align="left">San Marino</td>
+<td align="right">188</td>
+</tr>
+<tr class="even">
+<td align="left">Serbia</td>
+<td align="right">188</td>
+</tr>
+<tr class="odd">
+<td align="left">Slovakia</td>
+<td align="right">188</td>
+</tr>
+<tr class="even">
+<td align="left">Slovenia</td>
+<td align="right">188</td>
+</tr>
+<tr class="odd">
+<td align="left">Spain</td>
+<td align="right">188</td>
+</tr>
+<tr class="even">
+<td align="left">Sweden</td>
+<td align="right">188</td>
+</tr>
+<tr class="odd">
+<td align="left">Switzerland</td>
+<td align="right">188</td>
+</tr>
+<tr class="even">
+<td align="left">United Kingdom</td>
+<td align="right">564</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>datos_europa %&gt;%
+  filter(Fecha == ymd(&quot;2020-03-15&quot;)) %&gt;%
+  kable()</code></pre>
+<table style="width:100%;">
+<colgroup>
+<col width="10%" />
+<col width="14%" />
+<col width="5%" />
+<col width="6%" />
+<col width="6%" />
+<col width="11%" />
+<col width="8%" />
+<col width="11%" />
+<col width="8%" />
+<col width="6%" />
+<col width="9%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Provincia_Estado</th>
+<th align="left">Pais_Region</th>
+<th align="right">Latitud</th>
+<th align="right">Longitud</th>
+<th align="left">Fecha</th>
+<th align="right">Casos_Confirmados</th>
+<th align="right">Casos_Muertos</th>
+<th align="right">Casos_Recuperados</th>
+<th align="right">Casos Activos</th>
+<th align="left">WHO_Region</th>
+<th align="right">Casos_Enfermos</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"></td>
+<td align="left">Albania</td>
+<td align="right">41.15330</td>
+<td align="right">20.168300</td>
+<td align="left">2020-03-15</td>
+<td align="right">42</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">41</td>
+<td align="left">Europe</td>
+<td align="right">41</td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left">Andorra</td>
+<td align="right">42.50630</td>
+<td align="right">1.521800</td>
+<td align="left">2020-03-15</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="left">Europe</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left">Austria</td>
+<td align="right">47.51620</td>
+<td align="right">14.550100</td>
+<td align="left">2020-03-15</td>
+<td align="right">860</td>
+<td align="right">1</td>
+<td align="right">6</td>
+<td align="right">853</td>
+<td align="left">Europe</td>
+<td align="right">853</td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left">Belarus</td>
+<td align="right">53.70980</td>
+<td align="right">27.953400</td>
+<td align="left">2020-03-15</td>
+<td align="right">27</td>
+<td align="right">0</td>
+<td align="right">3</td>
+<td align="right">24</td>
+<td align="left">Europe</td>
+<td align="right">24</td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left">Belgium</td>
+<td align="right">50.83330</td>
+<td align="right">4.469936</td>
+<td align="left">2020-03-15</td>
+<td align="right">886</td>
+<td align="right">4</td>
+<td align="right">1</td>
+<td align="right">881</td>
+<td align="left">Europe</td>
+<td align="right">881</td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left">Bosnia and Herzegovina</td>
+<td align="right">43.91590</td>
+<td align="right">17.679100</td>
+<td align="left">2020-03-15</td>
+<td align="right">24</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">24</td>
+<td align="left">Europe</td>
+<td align="right">24</td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left">Bulgaria</td>
+<td align="right">42.73390</td>
+<td align="right">25.485800</td>
+<td align="left">2020-03-15</td>
+<td align="right">51</td>
+<td align="right">2</td>
+<td align="right">0</td>
+<td align="right">49</td>
+<td align="left">Europe</td>
+<td align="right">49</td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left">Croatia</td>
+<td align="right">45.10000</td>
+<td align="right">15.200000</td>
+<td align="left">2020-03-15</td>
+<td align="right">49</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">48</td>
+<td align="left">Europe</td>
+<td align="right">48</td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left">Czechia</td>
+<td align="right">49.81750</td>
+<td align="right">15.473000</td>
+<td align="left">2020-03-15</td>
+<td align="right">253</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">253</td>
+<td align="left">Europe</td>
+<td align="right">253</td>
+</tr>
+<tr class="even">
+<td align="left">Faroe Islands</td>
+<td align="left">Denmark</td>
+<td align="right">61.89260</td>
+<td align="right">-6.911800</td>
+<td align="left">2020-03-15</td>
+<td align="right">11</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">11</td>
+<td align="left">Europe</td>
+<td align="right">11</td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left">Denmark</td>
+<td align="right">56.26390</td>
+<td align="right">9.501800</td>
+<td align="left">2020-03-15</td>
+<td align="right">864</td>
+<td align="right">2</td>
+<td align="right">1</td>
+<td align="right">861</td>
+<td align="left">Europe</td>
+<td align="right">861</td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left">Estonia</td>
+<td align="right">58.59530</td>
+<td align="right">25.013600</td>
+<td align="left">2020-03-15</td>
+<td align="right">171</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">170</td>
+<td align="left">Europe</td>
+<td align="right">170</td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left">Finland</td>
+<td align="right">61.92411</td>
+<td align="right">25.748151</td>
+<td align="left">2020-03-15</td>
+<td align="right">244</td>
+<td align="right">0</td>
+<td align="right">10</td>
+<td align="right">234</td>
+<td align="left">Europe</td>
+<td align="right">234</td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left">France</td>
+<td align="right">46.22760</td>
+<td align="right">2.213700</td>
+<td align="left">2020-03-15</td>
+<td align="right">4499</td>
+<td align="right">91</td>
+<td align="right">12</td>
+<td align="right">4396</td>
+<td align="left">Europe</td>
+<td align="right">4396</td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left">Germany</td>
+<td align="right">51.16569</td>
+<td align="right">10.451526</td>
+<td align="left">2020-03-15</td>
+<td align="right">5795</td>
+<td align="right">11</td>
+<td align="right">46</td>
+<td align="right">5738</td>
+<td align="left">Europe</td>
+<td align="right">5738</td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left">Greece</td>
+<td align="right">39.07420</td>
+<td align="right">21.824300</td>
+<td align="left">2020-03-15</td>
+<td align="right">331</td>
+<td align="right">4</td>
+<td align="right">8</td>
+<td align="right">319</td>
+<td align="left">Europe</td>
+<td align="right">319</td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left">Holy See</td>
+<td align="right">41.90290</td>
+<td align="right">12.453400</td>
+<td align="left">2020-03-15</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="left">Europe</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left">Hungary</td>
+<td align="right">47.16250</td>
+<td align="right">19.503300</td>
+<td align="left">2020-03-15</td>
+<td align="right">32</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">30</td>
+<td align="left">Europe</td>
+<td align="right">30</td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left">Iceland</td>
+<td align="right">64.96310</td>
+<td align="right">-19.020800</td>
+<td align="left">2020-03-15</td>
+<td align="right">171</td>
+<td align="right">5</td>
+<td align="right">8</td>
+<td align="right">158</td>
+<td align="left">Europe</td>
+<td align="right">158</td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left">Ireland</td>
+<td align="right">53.14240</td>
+<td align="right">-7.692100</td>
+<td align="left">2020-03-15</td>
+<td align="right">129</td>
+<td align="right">2</td>
+<td align="right">0</td>
+<td align="right">127</td>
+<td align="left">Europe</td>
+<td align="right">127</td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left">Italy</td>
+<td align="right">41.87194</td>
+<td align="right">12.567380</td>
+<td align="left">2020-03-15</td>
+<td align="right">24747</td>
+<td align="right">1809</td>
+<td align="right">2335</td>
+<td align="right">20603</td>
+<td align="left">Europe</td>
+<td align="right">20603</td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left">Latvia</td>
+<td align="right">56.87960</td>
+<td align="right">24.603200</td>
+<td align="left">2020-03-15</td>
+<td align="right">30</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">29</td>
+<td align="left">Europe</td>
+<td align="right">29</td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left">Liechtenstein</td>
+<td align="right">47.14000</td>
+<td align="right">9.550000</td>
+<td align="left">2020-03-15</td>
+<td align="right">4</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">3</td>
+<td align="left">Europe</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left">Lithuania</td>
+<td align="right">55.16940</td>
+<td align="right">23.881300</td>
+<td align="left">2020-03-15</td>
+<td align="right">12</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">11</td>
+<td align="left">Europe</td>
+<td align="right">11</td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left">Luxembourg</td>
+<td align="right">49.81530</td>
+<td align="right">6.129600</td>
+<td align="left">2020-03-15</td>
+<td align="right">59</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">58</td>
+<td align="left">Europe</td>
+<td align="right">58</td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left">Moldova</td>
+<td align="right">47.41160</td>
+<td align="right">28.369900</td>
+<td align="left">2020-03-15</td>
+<td align="right">23</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">23</td>
+<td align="left">Europe</td>
+<td align="right">23</td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left">Monaco</td>
+<td align="right">43.73330</td>
+<td align="right">7.416700</td>
+<td align="left">2020-03-15</td>
+<td align="right">2</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">2</td>
+<td align="left">Europe</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left">Montenegro</td>
+<td align="right">42.70868</td>
+<td align="right">19.374390</td>
+<td align="left">2020-03-15</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="left">Europe</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left">Netherlands</td>
+<td align="right">52.13260</td>
+<td align="right">5.291300</td>
+<td align="left">2020-03-15</td>
+<td align="right">1135</td>
+<td align="right">20</td>
+<td align="right">0</td>
+<td align="right">1115</td>
+<td align="left">Europe</td>
+<td align="right">1115</td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left">North Macedonia</td>
+<td align="right">41.60860</td>
+<td align="right">21.745300</td>
+<td align="left">2020-03-15</td>
+<td align="right">14</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">13</td>
+<td align="left">Europe</td>
+<td align="right">13</td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left">Norway</td>
+<td align="right">60.47200</td>
+<td align="right">8.468900</td>
+<td align="left">2020-03-15</td>
+<td align="right">1221</td>
+<td align="right">3</td>
+<td align="right">1</td>
+<td align="right">1217</td>
+<td align="left">Europe</td>
+<td align="right">1217</td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left">Poland</td>
+<td align="right">51.91940</td>
+<td align="right">19.145100</td>
+<td align="left">2020-03-15</td>
+<td align="right">119</td>
+<td align="right">3</td>
+<td align="right">0</td>
+<td align="right">116</td>
+<td align="left">Europe</td>
+<td align="right">116</td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left">Portugal</td>
+<td align="right">39.39990</td>
+<td align="right">-8.224500</td>
+<td align="left">2020-03-15</td>
+<td align="right">245</td>
+<td align="right">0</td>
+<td align="right">2</td>
+<td align="right">243</td>
+<td align="left">Europe</td>
+<td align="right">243</td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left">Romania</td>
+<td align="right">45.94320</td>
+<td align="right">24.966800</td>
+<td align="left">2020-03-15</td>
+<td align="right">131</td>
+<td align="right">0</td>
+<td align="right">9</td>
+<td align="right">122</td>
+<td align="left">Europe</td>
+<td align="right">122</td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left">San Marino</td>
+<td align="right">43.94240</td>
+<td align="right">12.457800</td>
+<td align="left">2020-03-15</td>
+<td align="right">101</td>
+<td align="right">5</td>
+<td align="right">4</td>
+<td align="right">92</td>
+<td align="left">Europe</td>
+<td align="right">92</td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left">Serbia</td>
+<td align="right">44.01650</td>
+<td align="right">21.005900</td>
+<td align="left">2020-03-15</td>
+<td align="right">48</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">48</td>
+<td align="left">Europe</td>
+<td align="right">48</td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left">Slovakia</td>
+<td align="right">48.66900</td>
+<td align="right">19.699000</td>
+<td align="left">2020-03-15</td>
+<td align="right">54</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">54</td>
+<td align="left">Europe</td>
+<td align="right">54</td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left">Slovenia</td>
+<td align="right">46.15120</td>
+<td align="right">14.995500</td>
+<td align="left">2020-03-15</td>
+<td align="right">219</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">218</td>
+<td align="left">Europe</td>
+<td align="right">218</td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left">Spain</td>
+<td align="right">40.46367</td>
+<td align="right">-3.749220</td>
+<td align="left">2020-03-15</td>
+<td align="right">7798</td>
+<td align="right">289</td>
+<td align="right">517</td>
+<td align="right">6992</td>
+<td align="left">Europe</td>
+<td align="right">6992</td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left">Sweden</td>
+<td align="right">60.12816</td>
+<td align="right">18.643501</td>
+<td align="left">2020-03-15</td>
+<td align="right">1022</td>
+<td align="right">3</td>
+<td align="right">0</td>
+<td align="right">1019</td>
+<td align="left">Europe</td>
+<td align="right">1019</td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left">Switzerland</td>
+<td align="right">46.81820</td>
+<td align="right">8.227500</td>
+<td align="left">2020-03-15</td>
+<td align="right">2200</td>
+<td align="right">14</td>
+<td align="right">4</td>
+<td align="right">2182</td>
+<td align="left">Europe</td>
+<td align="right">2182</td>
+</tr>
+<tr class="even">
+<td align="left">Channel Islands</td>
+<td align="left">United Kingdom</td>
+<td align="right">49.37230</td>
+<td align="right">-2.364400</td>
+<td align="left">2020-03-15</td>
+<td align="right">3</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">3</td>
+<td align="left">Europe</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="left">Isle of Man</td>
+<td align="left">United Kingdom</td>
+<td align="right">54.23610</td>
+<td align="right">-4.548100</td>
+<td align="left">2020-03-15</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="left">Europe</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left">United Kingdom</td>
+<td align="right">55.37810</td>
+<td align="right">-3.436000</td>
+<td align="left">2020-03-15</td>
+<td align="right">3072</td>
+<td align="right">43</td>
+<td align="right">18</td>
+<td align="right">3011</td>
+<td align="left">Europe</td>
+<td align="right">3011</td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left">Kosovo</td>
+<td align="right">42.60264</td>
+<td align="right">20.902977</td>
+<td align="left">2020-03-15</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="left">Europe</td>
+<td align="right">0</td>
 </tr>
 </tbody>
 </table>

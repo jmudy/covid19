@@ -9,10 +9,12 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 library(reticulate) # versión 1.25
 library(knitr) # versión 1.39
-#library(kableExtra) # versión 1.3.4
+#library(kableExtra) # versión 1.3.4 # descomentar para que deje las tablas más bonitas
 library(tidyverse) # versión 1.3.2
 library(magrittr) # versión 2.0.3
 library(lubridate) # versión 1.8.0
+library(rnaturalearth) # versión 0.1.0
+library(plotly) # versión 4.10.0
 use_python("C:/Users/mudar/anaconda3/envs/covid19")
 ```
 
@@ -20,7 +22,9 @@ use_python("C:/Users/mudar/anaconda3/envs/covid19")
 
 Los datos que se van a analizar en este documento proceden de la compilación hecha por usuarios de [Kaggle](https://www.kaggle.com/datasets/imdevskp/corona-virus-report). La fecha del análisis empieza el 22 de agosto de 2022, utilizando la versión 166 recopilada en la web anterior.
 
-Carga del dataset desde Python:
+## Cargar el dataset correctamente
+
+### Carga del dataset desde Python
 
 ```{python}
 import pandas as pd
@@ -28,7 +32,7 @@ datos = pd.read_csv("data/covid_19_clean_complete.csv")
 datos.head(10)
 ```
 
-Otra forma de cargarlo con la librería reticulate con mejor visualización:
+### Carga del dataset con la librería reticulate
 
 ```{r}
 pd <- import("pandas")
@@ -36,14 +40,14 @@ datos <- pd$read_csv("data/covid_19_clean_complete.csv")
 kable(head(datos, 10))
 ```
 
-Carga normal desde R:
+### Carga del dataset desde R
 
 ```{r}
 datos <- read.csv("data/covid_19_clean_complete.csv", stringsAsFactors = T)
 datos %>% head(10) %>% kable()
 ```
 
-## Estructura de los datos
+## Estructura de los datos y cambio nombre de las columnas
 
 ```{r}
 str(datos)
@@ -61,9 +65,13 @@ colnames(datos) = c("Provincia_Estado",
 datos %>% head() %>% kable() # %>% kable_styling()
 ```
 
+## Tipo de datos de cada columna
+
 * Cualitativas se convierten `factor` o bien `as.factor`.
 * Ordinales se convierten con `ordered`.
 * Cuantitativas se convierten con `as.numeric`.
+
+## El tipo de dato fecha y su manipulación
 
 Cambiar la columna fecha a tipo Date:
 
@@ -78,7 +86,7 @@ $$Casos\ Confirmados = Muertos + Recuperados + Enfermos$$
 ```{r}
 # Lo siguiente da lo mismo que la columna Casos_Activos, pero en el dataset que se
 # utilizó en el curso no aparecía
-datos %<>%
+datos %<>% # Ventaja que nos ofrece la librería magrittr
   mutate(Casos_Enfermos = Casos_Confirmados - Casos_Muertos - Casos_Recuperados)
 
 datos %>%
@@ -94,7 +102,11 @@ datos %>%
 datos %>%
   filter(Provincia_Estado == "Hainan") %>%
   kable()
+```
 
+## Datos anómalos y sin sentido
+
+```{r}
 # Corregir datos anómalos y sin sentido
 datos %>%
   filter(Provincia_Estado == "Hainan", Casos_Enfermos < 0) %>%
@@ -103,7 +115,7 @@ datos %>%
   kable()
 ```
 
-# Análisis geográfico
+# Análisis geográfico de los datos
 
 ```{r}
 #datos_europa = datos[datos$Latitud > 38 & datos$Longitud > -25 & datos$Longitud < 30 , ]
@@ -122,13 +134,99 @@ datos_europa %>%
   kable()
 ```
 
+## Ejercicio práctico: mi viaje a Potsman
 
+Distancia euclídea:
 
+$$d(x, y) = \sqrt{(x_{Lat} - y_{Lat})^2 + (x_{Long} - y_{Long})^2}$$
 
+```{r}
+distancia_grados <- function(x, y){
+  sqrt((x[1] - y[1])^2 + (x[2] - y[2])^2)
+}
 
+distancia_grados_potsdam <- function(x){
+  potsdam = c(52.366956, 13.906734)
+  distancia_grados(x, potsdam)
+}
 
+dist_potsdam <- apply(cbind(datos_europa$Latitud, datos_europa$Longitud),
+                      MARGIN = 1,
+                      FUN = distancia_grados_potsdam)
 
+datos_europa %<>%
+  mutate(dist_potsdam = dist_potsdam)
 
+datos_europa %>%
+  filter(between(Fecha, dmy("02-03-2020"), dmy("07-03-2020")),
+         dist_potsdam < 4) %>% # Radio menor de 4 grados
+  arrange(Pais_Region) %>% # Ordenar por país
+  kable()
+```
+
+## Mapas del mundo con rnaturalearth
+
+```{r}
+# Antes se necesita instalar rnaturalearthdata
+#install.packages("rnaturalearthdata")
+world <- ne_countries(scale = "medium", returnclass = "sf")
+
+datos$Pais_Region = factor(datos$Pais_Region, levels = c(levels(datos$Pais_Region), "United States"))
+datos[datos$Pais_Region == "US", ]$Pais_Region = "United States"
+
+world %>% 
+  inner_join(datos, by = c("name" = "Pais_Region")) %>%
+  filter(Fecha == dmy("30-05-2020")) %>%
+  ggplot() +
+  geom_sf(color = "black", aes(fill = Casos_Confirmados)) +
+  #coord_sf(crs = "+proj=laea +lat_0=50 +lon_0=10 +units=m +ellps=GRS80") +
+  scale_fill_viridis_c(option = "plasma", trans = "sqrt") +
+  xlab("Longitud") + ylab("Latitud") +
+  ggtitle("Mapa del mundo",  subtitle = "COVID-19") -> g
+
+ggplotly(g) # para hacer el mapa interativo
+```
+
+Faltan regiones por pintar porque no vienen estandarizados los países en los dos datasets. Se ha arreglado Estados Unidos, sería recomendable hacer lo mismo con los demás países faltantes.
+
+## Mapa minimalista con puntos
+
+```{r}
+datos %>%
+  filter(Fecha == dmy("30/03/2020")) %>%
+  ggplot(aes(x = Longitud, y = Latitud)) +
+  geom_point(aes(size = log(Casos_Confirmados + 1), colour = log(Casos_Muertos + 1))) +
+  coord_fixed() +
+  theme(legend.position = "bottom") -> g
+
+ggplotly(g) # para hacer el mapa interativo
+```
+
+## Top de países infectados
+
+```{r}
+thresh = 1000
+datos %>%
+  filter(Fecha == ymd("2020-04-05"),
+         Casos_Confirmados > thresh) %>%
+  mutate(Prop_Muertos = Casos_Muertos / Casos_Confirmados,
+         Ranking = dense_rank(desc(Prop_Muertos))) %>%
+  arrange(Ranking) %>%
+  head(10) %>%
+  kable()
+```
+
+## Segmentación de los datos de Regiones por Categorías con mosaicplot
+
+```{r}
+datos$lat_class = cut(datos$Latitud,
+                      breaks = seq(from = -90, to = 90, by = 10))
+datos$long_class = cut(datos$Longitud,
+                       breaks = seq(from = -180, to = 180, by = 10))
+tt = table(datos$lat_class, datos$long_class)
+tt = tt[nrow(tt):1, ]
+mosaicplot(t(tt), shade = T)
+```
 
 
 

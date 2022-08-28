@@ -15,6 +15,8 @@ library(magrittr) # versión 2.0.3
 library(lubridate) # versión 1.8.0
 library(rnaturalearth) # versión 0.1.0
 library(plotly) # versión 4.10.0
+library(xts) # versión 0.12.1
+library(dygraphs) # versión 1.1.1.6
 use_python("C:/Users/mudar/anaconda3/envs/covid19")
 ```
 
@@ -227,6 +229,157 @@ tt = table(datos$lat_class, datos$long_class)
 tt = tt[nrow(tt):1, ]
 mosaicplot(t(tt), shade = T)
 ```
+
+# Análisis Temporal de los Datos
+
+## Evolución de Infectados vs Recuperados vs Muertos
+
+```{r}
+datos_por_fecha = aggregate(
+  cbind(Casos_Confirmados, Casos_Muertos, Casos_Recuperados) ~ Fecha,
+                            data = datos,
+                            FUN = sum
+  )
+datos_por_fecha$Casos_Enfermos = datos_por_fecha$Casos_Confirmados - datos_por_fecha$Casos_Muertos - datos_por_fecha$Casos_Recuperados
+head(datos_por_fecha)
+tail(datos_por_fecha)
+
+barplot(Casos_Confirmados ~ Fecha, data = datos_por_fecha)
+
+plot(Casos_Confirmados ~ Fecha, data = datos_por_fecha,
+     col = "blue", type = "l", main = "Casos documentados por día en todo el mundo",
+     xlab = "Fecha", ylab = "Número de personas", log = "y")
+lines(Casos_Muertos ~ Fecha, data = datos_por_fecha, col = "red")
+lines(Casos_Recuperados ~ Fecha, data = datos_por_fecha, col = "green")
+legend("topleft", c("Confirmados", "Muertos", "Recuperados"),
+       col = c("blue", "red", "green"), pch = 1, lwd = 2)
+```
+
+## Análisis de los datos de España
+
+```{r}
+datos_spain = datos %>%
+  filter(Pais_Region == "Spain") %>%
+  select(Fecha, starts_with("Casos_"))
+
+plot(x = datos_spain$Fecha, y = datos_spain$Casos_Confirmados,
+     main = "Datos confirmados en España", type = "s",
+     col = "blue", lwd = 2)
+
+barplot(as.matrix(t(datos_spain[, 3:5])),
+        names = datos_spain$Fecha,
+        col = c("red", "green", "yellow"),
+        main = "Estudio de casos por tipo en España",
+        xlab = "Fecha",
+        ylab = "Número de personas")
+legend("topleft", c("Muertos", "Recuperados", "Enfermos"),
+       col = c("red", "green", "yellow"), lwd = 2, pch = 1)
+```
+
+## Librería xts en el Análisis Temporal
+
+```{r}
+datos_por_fecha_ts <- xts(x = datos_por_fecha[, 2:5],
+                          order.by = datos_por_fecha$Fecha)
+dygraph(datos_por_fecha_ts) %>%
+  dyOptions(labelsUTC = T, labelsKMB = T,
+            fillGraph = T, fillAlpha = 0.05,
+            drawGrid = F, colors = "green") %>%
+  dyRangeSelector() %>%
+  dyCrosshair(direction = "vertical") %>%
+  dyHighlight(highlightCircleSize = 5, highlightSeriesBackgroundAlpha = 0.2,
+              hideOnMouseOut = F) %>%
+  dyRoller(rollPeriod = 2)
+```
+
+```{r}
+datos_spain = datos %>%
+  filter(Pais_Region == "Spain") %>%
+  select(Fecha, starts_with("Casos_"))
+
+plot(x = datos_spain$Fecha, y = datos_spain$Casos_Confirmados,
+     main = "Datos confirmados en España", type = "s",
+     col = "blue", lwd = 2)
+
+datos_por_fecha_ts <- xts(x = datos_spain[, 2:5],
+                          order.by = datos_spain$Fecha)
+dygraph(datos_por_fecha_ts) %>%
+  dyOptions(labelsUTC = T, labelsKMB = T,
+            fillGraph = T, drawGrid = F, colors = "#D9AE55") %>%
+  dyRangeSelector() %>%
+  dyCrosshair(direction = "vertical") %>%
+  dyHighlight(highlightCircleSize = 5, highlightSeriesBackgroundAlpha = 0.2,
+              hideOnMouseOut = F) %>%
+  dyRoller(rollPeriod = 2)
+```
+
+## Lead, lag y estudio de nuevos casos
+
+```{r}
+datos_spain %<>%
+  mutate(Nuevos_Casos_Confirmados = Casos_Confirmados - lag(Casos_Confirmados, n = 1),
+         Nuevos_Casos_Muertos = Casos_Muertos - lag(Casos_Muertos, n = 1),
+         Nuevos_Casos_Recuperados = Casos_Recuperados - lag(Casos_Recuperados, n = 1)
+         )
+
+plot(Nuevos_Casos_Confirmados ~ Fecha, data = datos_spain[datos_spain$Fecha <= "2020-04-12", ],
+     type = "l", col ="blue", 
+     xlab = "Fecha", ylab = "Nuevos casos", 
+     main = "Nuevos registros en España")
+lines(Nuevos_Casos_Muertos ~ Fecha, data = datos_spain[datos_spain$Fecha <= "2020-04-12", ],
+      type = "l", col = "red")
+lines(Nuevos_Casos_Recuperados ~ Fecha, data = datos_spain[datos_spain$Fecha <= "2020-04-12", ],
+      type = "l", col = "green")
+
+legend("topleft", c("Confirmados", "Muertos", "Recuperados"), 
+       col = c("blue", "red", "green"), 
+       lwd = 2, pch = 1)
+```
+
+Se tomaron mal los datos porque aparecen Nuevos Confirmados y Nuevos muertos negativos por lo que muestro la evolución de nuevos confirmados, nuevos muertos y nuevos recuperados hasta el *12 de abril de 2020* (igual que en el curso).
+
+# Análisis por Cohortes
+
+## Días desde el Origen de la pandemia
+
+```{r}
+primer_contagio = datos %>%
+  group_by(Pais_Region) %>%
+  filter(Casos_Confirmados > 0) %>%
+  summarise(Primer_Contagio = min(Fecha - 1)) # Fecha de primer contacto de cada 
+
+data_first =  datos %>%
+  inner_join(primer_contagio, by = "Pais_Region") %>%
+  mutate(Dias_Desde_PC = as.numeric(Fecha - Primer_Contagio)) %>%
+  filter(Dias_Desde_PC >= 0) %>%
+  group_by(Dias_Desde_PC, Pais_Region) %>%
+  summarise(Casos_Confirmados = sum(Casos_Confirmados),
+            Casos_Muertos = sum(Casos_Muertos),
+            Casos_Recuperados = sum(Casos_Recuperados),
+            Casos_Enfermos = sum(Casos_Enfermos))
+```
+
+# Representación Gráfica del Cohorte
+
+```{r}
+data_first %>%
+  #filter(Pais_Region %in% c("Spain", "Italy", "China", "United States", "Germany")) %>%
+  ggplot(aes(x = Dias_Desde_PC, y = Casos_Confirmados)) +
+  geom_line(aes(col = Pais_Region)) +
+  xlab("Días desde el primer contagio") +
+  ylab("Número de personas contagiadas") +
+  ggtitle("Análisis por Cohortes") +
+  theme(legend.position = "none") -> g
+
+ggplotly(g)
+```
+
+
+
+
+
+
+
 
 
 

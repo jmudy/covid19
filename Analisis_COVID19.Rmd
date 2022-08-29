@@ -61,7 +61,7 @@ colnames(datos) = c("Provincia_Estado",
                     "Casos_Confirmados",
                     "Casos_Muertos",
                     "Casos_Recuperados",
-                    "Casos Activos",
+                    "Casos_Activos",
                     "WHO_Region"
                     )
 datos %>% head() %>% kable() # %>% kable_styling()
@@ -197,7 +197,8 @@ Faltan regiones por pintar porque no vienen estandarizados los países en los do
 datos %>%
   filter(Fecha == dmy("30/03/2020")) %>%
   ggplot(aes(x = Longitud, y = Latitud)) +
-  geom_point(aes(size = log(Casos_Confirmados + 1), colour = log(Casos_Muertos + 1))) +
+  geom_point(aes(size = log(Casos_Confirmados + 1),
+                 colour = log(Casos_Muertos + 1))) +
   coord_fixed() +
   theme(legend.position = "bottom") -> g
 
@@ -238,8 +239,8 @@ mosaicplot(t(tt), shade = T)
 datos_por_fecha = aggregate(
   cbind(Casos_Confirmados, Casos_Muertos, Casos_Recuperados) ~ Fecha,
                             data = datos,
-                            FUN = sum
-  )
+                            FUN = sum)
+
 datos_por_fecha$Casos_Enfermos = datos_por_fecha$Casos_Confirmados - datos_por_fecha$Casos_Muertos - datos_por_fecha$Casos_Recuperados
 head(datos_por_fecha)
 tail(datos_por_fecha)
@@ -284,7 +285,7 @@ datos_por_fecha_ts <- xts(x = datos_por_fecha[, 2:5],
 dygraph(datos_por_fecha_ts) %>%
   dyOptions(labelsUTC = T, labelsKMB = T,
             fillGraph = T, fillAlpha = 0.05,
-            drawGrid = F, colors = "green") %>%
+            drawGrid = F, colors = "#FF2D55") %>%
   dyRangeSelector() %>%
   dyCrosshair(direction = "vertical") %>%
   dyHighlight(highlightCircleSize = 5, highlightSeriesBackgroundAlpha = 0.2,
@@ -305,7 +306,7 @@ datos_por_fecha_ts <- xts(x = datos_spain[, 2:5],
                           order.by = datos_spain$Fecha)
 dygraph(datos_por_fecha_ts) %>%
   dyOptions(labelsUTC = T, labelsKMB = T,
-            fillGraph = T, drawGrid = F, colors = "#D9AE55") %>%
+            fillGraph = T, drawGrid = F, colors = "#FF2D55") %>%
   dyRangeSelector() %>%
   dyCrosshair(direction = "vertical") %>%
   dyHighlight(highlightCircleSize = 5, highlightSeriesBackgroundAlpha = 0.2,
@@ -346,7 +347,7 @@ Se tomaron mal los datos porque aparecen Nuevos Confirmados y Nuevos muertos neg
 primer_contagio = datos %>%
   group_by(Pais_Region) %>%
   filter(Casos_Confirmados > 0) %>%
-  summarise(Primer_Contagio = min(Fecha - 1)) # Fecha de primer contacto de cada 
+  summarise(Primer_Contagio = min(Fecha - 1)) # Fecha de primer contacto de cada país
 
 data_first =  datos %>%
   inner_join(primer_contagio, by = "Pais_Region") %>%
@@ -363,7 +364,7 @@ data_first =  datos %>%
 
 ```{r}
 data_first %>%
-  #filter(Pais_Region %in% c("Spain", "Italy", "China", "United States", "Germany")) %>%
+  #filter(Pais_Region %in% c("Spain", "Italy", "China", "US", "Germany")) %>%
   ggplot(aes(x = Dias_Desde_PC, y = Casos_Confirmados)) +
   geom_line(aes(col = Pais_Region)) +
   xlab("Días desde el primer contagio") +

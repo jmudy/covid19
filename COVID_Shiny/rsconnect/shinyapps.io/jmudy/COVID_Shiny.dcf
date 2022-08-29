@@ -1,0 +1,13 @@
+name: COVID_Shiny
+title: COVID_Shiny
+username:
+account: jmudy
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 6869589
+bundleId: 6248647
+url: https://jmudy.shinyapps.io/COVID_Shiny/
+when: 1661790444.58231
+lastSyncTime: 1661790444.58232
+asMultiple: FALSE
+asStatic: FALSE

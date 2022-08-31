@@ -14,6 +14,8 @@ Durante el curso no se emplea en ningún momento `Python`, por lo que se puede p
 
 ## Consideraciones a tener en cuenta
 
-* Los RMarkdown de la carpeta [presentaciones](https://github.com/jmudy/covid19/tree/curso/presentaciones) no han sido modificados con mi configuración. Solo he empleado los ficheros `.html` como apoyo durante el curso.
+* El RMarkdown `EstudioChi2.Rmd` no ha sido modificado con mi configuración ya que me saltaban errores sin saber el motivo. Solo he empleado el fichero `.html` como apoyo durante el curso.
 
-* Los datos utilizados en `Fuentes_de_datos.Rmd` de la carpeta [extra](https://github.com/jmudy/covid19/tree/curso/extra) utiliza datos COVID-19 en España no actualizados (contienen datos hasta abril 2020). En el RMarkdown `Analisis_COVID19.Rmd` sí que se ha empleado un dataset actualizado al día de escribir el código (agosto 2022).
+* He eliminado los scripts de `R` del repo original ya que no me funcionaba ninguno de ellos.
+
+* Los datos utilizados en `Fuentes_de_datos.Rmd` utiliza datos COVID-19 en España no actualizados (contienen datos hasta abril 2020). En el resto de RMarkdowns sí que se ha empleado un dataset actualizado al día de escribir el código (agosto 2022).

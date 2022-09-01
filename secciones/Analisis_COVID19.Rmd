@@ -7,6 +7,7 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+Sys.setenv(RETICULATE_PYTHON = "C:/Users/mudar/anaconda3/envs/covid19")
 library(reticulate) # versión 1.25
 library(knitr) # versión 1.39
 #library(kableExtra) # versión 1.3.4 # descomentar para que deje las tablas más bonitas
@@ -14,10 +15,10 @@ library(tidyverse) # versión 1.3.2
 library(magrittr) # versión 2.0.3
 library(lubridate) # versión 1.8.0
 library(rnaturalearth) # versión 0.1.0
+library(car) # versión 3.1-0
 library(plotly) # versión 4.10.0
 library(xts) # versión 0.12.1
 library(dygraphs) # versión 1.1.1.6
-use_python("C:/Users/mudar/anaconda3/envs/covid19")
 ```
 
 # Carga y limpieza preliminar de los datos
@@ -375,26 +376,62 @@ data_first %>%
 ggplotly(g)
 ```
 
+# Análisis predictivo
 
+## Modelos de regresión
 
+* $x$: Variable Independiente: número de días desde el origen de la pandemia.
+* $y$: Variable Dependiente: número de casos confirmados.
 
+$$y = f(x)$$
 
+```{r}
+datos_spain$Dias = as.numeric(datos_spain$Fecha - dmy("22/01/2020"))
+```
 
+## Regresión Lineal
 
+$$y = a*x+b a,b\in \mathbb R$$
 
+$$min_{a.b\in\mathbb R} \sum_{i=1}^n (y_i-(ax_i+b))^2$$
 
+```{r}
+mod1 <- lm(Casos_Confirmados ~ Dias, data = datos_spain)
+summary(mod1)
+```
 
+$$Casos\ Confirmados = `r mod1$coefficients[2]` Dias + `r mod1$coefficients[1]`$$
 
+```{r}
+plot(datos_spain$Dias, datos_spain$Casos_Confirmados)
+abline(mod1, col = "red")
+plot(mod1$residuals ~ mod1$fitted.values, xlab = "Valores Ajustados", ylab = "Residuos del modelo")
+residuos = mod1$residuals
+qqPlot(residuos, distribution = "norm", 
+       mean = mean(residuos), sd = sd(residuos))
+```
 
+## Modelo de Regresión Exponencial
 
+$$log(y) = ax+b, a,b \in \mathbb R$$
 
+$$y = e^{ax+b} = m e^{ax}$$
 
+```{r}
+mod2 <- lm(log(Casos_Confirmados) ~ Dias, data = datos_spain[datos_spain$Casos_Confirmados > 0, ])
+summary(mod2)
+```
 
+$$Casos\ Confirmados = `r exp(mod2$coefficients[1])` \cdot e^{`r mod2$coefficients[2]`\cdot x}$$
 
-
-
-
-
+```{r}
+plot(datos_spain$Dias, datos_spain$Casos_Confirmados)
+lines(exp(mod2$coefficients[1])*exp(mod2$coefficients[2]*datos_spain$Dias), col = "blue")
+plot(mod2$residuals ~ mod2$fitted.values, xlab = "Valores Ajustados", ylab = "Residuos del modelo")
+residuos = mod2$residuals
+qqPlot(residuos, distribution = "norm", 
+       mean = mean(residuos), sd = sd(residuos))
+```
 
 
 

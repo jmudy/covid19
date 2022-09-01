@@ -1,0 +1,81 @@
+---
+title: 'Fuentes: Actualización fuentes de datos noviembre 2020'
+author: "Ricardo Alberich, Juan Gabriel Gomila y Arnau Mir"
+date: '2022-08-31'
+output:
+  ioslides_presentation:
+    widescreen: yes
+    css: css/Mery_style.css
+    fig_caption: yes
+  beamer_presentation: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,warning = FALSE)
+library(tidyverse)
+```
+
+# Cambios en la recolección y acceso de los datos
+
+## Aspectos que han cambiado 
+
+Trataremos en estas lineas de explicar la situación del acceso a datos del COVID19 a finales de noviembre de 2020.
+
+Alrededor de mayo de 2020 se van acentuado cambios de datos sobre la pandemia de  forma mundial.
+
+Se trata de varios asuntos:
+
+## Aspectos que han cambiado 
+
+* Dar datos mundiales en un formato coherente.
+* Dar los datos  de cada país desagregamos por estados, comunidades autónomas municipios e incluso  zonas sanitarias de grandes ciudades.
+* Los datos deben ser "revisables" es decir se deben publicar y luego ir corrigiendo de forma satisfactoria en días posteriores.
+* Es muy importante para cada zona/país de medida (y  ha ser posible desagregado para sus divisiones territoriales) recolectar datos sobre las medidas de prevención adoptadas en cada día de medición de casos. Se trata de fijar si hay confinamiento total, colegios cerrados, hostelería cerrada, restricciones de movilidad, etc.
+
+## Comentaremos tres casos
+
+Comentaremos tres casos:
+
+* Veremos cómo se  han modificado los datos públicos en España.
+* Comentaremos alguna iniciativa privada.
+* Finalizaremos con una iniciativa mundial colaborativa de  [Covid-19 Data Hub](https://covid19datahub.io/index.html).
+
+## Fuentes de datos publicos  y de empresa
+
+Veremos  3 tipos  y trataremos más a fondo último caso
+
+* Datos oficiales
+  * [Panel de control COVID-19](https://cnecovid.isciii.es/covid19/) del [ISCIII](https://www.isciii.es/Paginas/Inicio.aspx). Desarrollado en [Shiny](https://shiny.rstudio.com/)
+  
+* Datos iniciativa privadas empresas
+   * Como  ejemplo la empresa [Esri](https://www.esri.com/en-us/home)  ha desarrollado [COVID-19 GIS Hub España](https://covid19esrispain-sitesesrispain.hub.arcgis.com). Software [ArGIS](https://es.wikipedia.org/wiki/ArcGIS)
+
+## Fuentes de datos iniciativas libres.
+  
+* Datos iniciativas  individuales/altruistas
+
+  * [Github.io de rubenfcasal](https://rubenfcasal.github.io/COVID-19/#enlaces). Cuenta la historia de los datos en España desde el principio.
+  * [Panel del Carlos Fernández (UDC)](https://covid19.citic.udc.es/).
+  * [COVID-19 Data Hub](https://covid19datahub.io/index.html)
+
+## Fuentes de datos, más enlaces.
+
+* Un par de enlaces más  con R
+  * [Top 100 R resources on Novel COVID-19 Coronavirus](https://www.statsandr.com/blog/top-r-resources-on-covid-19-coronavirus/)
+  * [Mapas con shiny, leaflet y dplyr](http://r-posts.com/covid-19-interactive-map-using-r-with-shiny-leaflet-and-dplyr/)
+
+# Covid-19 Data Hub
+
+## Qué es Covid-19 Data Hub
+
+Como dice en su página  es un ..." intento de  proveer a la comunidad invesigadora un  conjunto de datos unificado...."
+
+> The goal of COVID-19 Data Hub is to provide the research community with a > unified dataset by collecting worldwide fine-grained case data, merged with
+> exogenous variables helpful for a better understanding of COVID-19.
+
+Además estará disponible su acceso en: **R, Python, MATLAB, Julia, Node.js Scala y Excel**. 
+
+## Covid-19 Data Hub
+
+* La web [Covid-19 Data Hub](https://covid19datahub.io/index.html) es una recolección de datos mundiales de COVID19
+* Hay que citarla y fue creada por [Guidotti and Ardia (2020)](https://joss.theoj.org/papers/10.21105/joss.02376) 

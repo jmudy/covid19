@@ -3580,7 +3580,7 @@ plot(infectados.ajustados)</pre>
 
 <p>Para hacer predicciones más allá del último día de nuestra tabla de datos hemos de usar la función <code>forecast.HoltWinters</code> del paquete <code>forecast</code> donde el parámetro <code>h</code> indica hasta dónde queremos realizar la predicción:</p>
 
-<pre class = 'prettyprint lang-r'>library(forecast)
+<pre class = 'prettyprint lang-r'>library(forecast) # versión 8.16
 (predicción.infectados.semana = forecast:::forecast.HoltWinters(predicción.infectados, 
                                                                 h=7))</pre>
 

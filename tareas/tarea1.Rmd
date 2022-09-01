@@ -2,16 +2,14 @@
 title: "Tarea 1 - Tasa de Variación Media"
 author: "Jesus Mudarra Luján"
 date: '2022-08-26'
-output:
-  pdf_document: default
-  html_document: default
+output: html_document
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-library(tidyverse)
-library(magrittr)
-library(lubridate)
+library(tidyverse) # versión 1.3.2
+library(magrittr) # versión 2.0.3
+library(lubridate) # versión 1.8.0
 ```
 
 # Instrucciones

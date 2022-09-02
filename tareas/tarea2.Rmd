@@ -1,12 +1,12 @@
 ---
 title: "Tarea 2 - Estudio de la homogeneidad de la infección para los datos de España"
 author: "Jesus Mudarra Luján"
-date: '2022-09-01'
+date: '2022-09-03'
 output:
   html_document:
     theme: cerulean
-    toc: true
-    toc_float: true
+    toc: yes
+    toc_float: yes
 ---
 
 ```{r setup, include=FALSE}
@@ -19,9 +19,7 @@ library(knitr) # versión 1.39
 
 # Instrucciones
 
-En esta tarea vamos a realizar un estudio de la homogeneización de la infección por comunidades autónomas
-dentro de España. Es decir, a partir del test $\chi^2$ vamos a ver si el virus se expandió por igual en todas las
-comunidades autónomas de España.
+En esta tarea vamos a realizar un estudio de la homogeneización de la infección por comunidades autónomas dentro de España. Es decir, a partir del test $\chi^2$ vamos a ver si el virus se expandió por igual en todas las comunidades autónomas de España.
 
 # Descripción de la tarea
 
@@ -29,11 +27,8 @@ Instrucciones de tareas
 
 En el recurso descargable ficheros.zip tenéis dos ficheros:
 
-* El archivo `datosCCAA.csv` donde estan los datos del número de infectados, hospitalizados, fallecidos y
-pacientes en las UCI (ver la variable o columna tipo) de las 17 comunidades autónomas (faltan Ceuta y
-Melilla) de España.
-* El archivo `Fichero_poblaciónCCAA.csv` donde están los datos de la población o del número de
-habitantes de las 17 comunidades autónomas.
+* El archivo `datosCCAA.csv` donde estan los datos del número de infectados, hospitalizados, fallecidos y pacientes en las UCI (ver la variable o columna tipo) de las 17 comunidades autónomas (faltan Ceuta y Melilla) de España.
+* El archivo `Fichero_poblaciónCCAA.csv` donde están los datos de la población o del número de habitantes de las 17 comunidades autónomas.
 
 ## Pregunta 1
 
@@ -58,38 +53,207 @@ data %<>%
   select(fecha, CCAA, total, tipo) %>%
   pivot_wider(names_from = CCAA, values_from = total)
 
-data[data$tipo == "casos", ] %>%
+data = data[data$tipo == "casos", ]
+
+data %>%
   kable()
 ```
 
 ## Pregunta 2
 
-Usando el paquete `ggplot2`, realizar un gráfico del número de infectados donde cada comunidad autónoma
-aparezca de un color distinto.
+Usando el paquete `ggplot2`, realizar un gráfico del número de infectados donde cada comunidad autónoma aparezca de un color distinto.
 
 
+```{r}
+x = data$fecha
+ggplot(data, aes(x)) +
+  geom_line(aes(y = Andalucía, colour = "Andalucía")) +
+  geom_line(aes(y = Aragón, colour = "Aragón")) +
+  geom_line(aes(y = Asturias, colour = "Asturias")) +
+  geom_line(aes(y = Baleares, colour = "Baleares")) +
+  geom_line(aes(y = Canarias, colour = "Canarias")) +
+  geom_line(aes(y = Cantabria, colour = "Cantabria")) +
+  geom_line(aes(y = `Castilla-La Mancha`, colour = "Castilla-La Mancha")) +
+  geom_line(aes(y = `Castilla y León`, colour = "Castilla y León")) +
+  geom_line(aes(y = Cataluña, colour = "Cataluña")) +
+  geom_line(aes(y = `C. Valenciana`, colour = "C. Valenciana")) +
+  geom_line(aes(y = Extremadura, colour = "Extremadura")) +
+  geom_line(aes(y = Galicia, colour = "Galicia")) +
+  geom_line(aes(y = Madrid, colour = "Madrid")) +
+  geom_line(aes(y = Murcia, colour = "Murcia")) +
+  geom_line(aes(y = Navarra, colour = "Navarra")) +
+  geom_line(aes(y = `País Vasco`, colour = "País Vasco")) +
+  xlab("Fecha") + ylab("Frecuencias")
+```
 
 ## Pregunta 3
 
-Para el día **15 de marzo de 2020** y suponiendo que la infección se ha expandido por igual en todas las
-comunidades autónomas hallar el **número de infectados esperado y empírico** para todas las comunidades
-autónomas.
+Para el día **15 de marzo de 2020** y suponiendo que la infección se ha expandido por igual en todas las comunidades autónomas hallar el **número de infectados esperado y empírico** para todas las comunidades autónomas.
+
+```{r ,eval=FALSE}
+# No he entendido bien como realizar el procedimiento de este ejercicio, así que he copiado y pegado
+fecha = "2020-03-15"
+
+freq_emp = data[data$fecha==fecha & data$tipo=="casos", ]
+freq_emp = freq_emp[c(-1, -2)]
+freq_emp_sum = sum(freq_emp)
+
+data2 = read.csv("data/Fichero_poblacionCCAA.csv")
+
+pob_ccaa = data2$Pob_CCAA_2019
+pob_total = sum(pob_ccaa)
+
+freq_esperada = freq_emp_sum*data2$ccaa/pob_total
+```
 
 ## Pregunta 4
 
-Realizar el test $\chi^2$ correspondiente para testear si nuestra hipótesis de infección por igual es cierta o no y
-comentar los resultados obtenidos.
+Realizar el test $\chi^2$ correspondiente para testear si nuestra hipótesis de infección por igual es cierta o no y comentar los resultados obtenidos.
+
+```{r ,eval=FALSE}
+chisq.test(freq_emp, p = freq_esperada/sum(freq_esperada))
+```
 
 ## Pregunta 5
 
 Realizar las preguntas 3) y 4) pero para el día **4 de abril**.
 
+```{r ,eval=FALSE}
+# No he entendido bien como realizar el procedimiento de este ejercicio, así que he copiado y pegado
+fecha = "2020-04-04"
+
+freq_emp = data[data$fecha==fecha & data$tipo=="casos", ]
+freq_emp = freq_emp[c(-1, -2)]
+freq_emp_sum = sum(freq_emp)
+
+data2 = read.csv("data/Fichero_poblacionCCAA.csv")
+
+pob_ccaa = data2$Pob_CCAA_2019
+pob_total = sum(pob_ccaa)
+
+freq_esperada = freq_emp_sum*data2$ccaa/pob_total
+```
+
+```{r ,eval=FALSE}
+chisq.test(freq_emp, p = freq_esperada/sum(freq_esperada))
+```
+
 ## Pregunta 6
 
-Realizar las preguntas 1), 2), 3) y 4) pero en lugar de considerar el número de infectados, considerar el
-**número de fallecidos**.
+Realizar las preguntas 1), 2), 3) y 4) pero en lugar de considerar el número de infectados, considerar el **número de fallecidos**.
+
+```{r}
+data <- read.csv("data/DatosCCAA.csv")
+data$fecha %<>% ymd()
+
+data %<>%
+  select(fecha, CCAA, total, tipo) %>%
+  pivot_wider(names_from = CCAA, values_from = total)
+
+data = data[data$tipo == "fallecidos", ]
+
+data %>%
+  kable()
+```
+
+```{r}
+x = data$fecha
+ggplot(data, aes(x)) +
+  geom_line(aes(y = Andalucía, colour = "Andalucía")) +
+  geom_line(aes(y = Aragón, colour = "Aragón")) +
+  geom_line(aes(y = Asturias, colour = "Asturias")) +
+  geom_line(aes(y = Baleares, colour = "Baleares")) +
+  geom_line(aes(y = Canarias, colour = "Canarias")) +
+  geom_line(aes(y = Cantabria, colour = "Cantabria")) +
+  geom_line(aes(y = `Castilla-La Mancha`, colour = "Castilla-La Mancha")) +
+  geom_line(aes(y = `Castilla y León`, colour = "Castilla y León")) +
+  geom_line(aes(y = Cataluña, colour = "Cataluña")) +
+  geom_line(aes(y = `C. Valenciana`, colour = "C. Valenciana")) +
+  geom_line(aes(y = Extremadura, colour = "Extremadura")) +
+  geom_line(aes(y = Galicia, colour = "Galicia")) +
+  geom_line(aes(y = Madrid, colour = "Madrid")) +
+  geom_line(aes(y = Murcia, colour = "Murcia")) +
+  geom_line(aes(y = Navarra, colour = "Navarra")) +
+  geom_line(aes(y = `País Vasco`, colour = "País Vasco")) +
+  xlab("Fecha") + ylab("Frecuencias")
+```
+
+```{r ,eval=FALSE}
+# No he entendido bien como realizar el procedimiento de este ejercicio, así que he copiado y pegado
+fecha = "2020-03-15"
+
+freq_emp = data[data$fecha==fecha & data$tipo=="fallecidos", ]
+freq_emp = freq_emp[c(-1, -2)]
+freq_emp_sum = sum(freq_emp)
+
+data2 = read.csv("data/Fichero_poblacionCCAA.csv")
+
+pob_ccaa = data2$Pob_CCAA_2019
+pob_total = sum(pob_ccaa)
+
+freq_esperada = freq_emp_sum*data2$ccaa/pob_total
+```
+
+```{r ,eval=FALSE}
+chisq.test(freq_emp, p = freq_esperada/sum(freq_esperada))
+```
 
 ## Pregunta 7
 
-Realizar las preguntas 1), 2), 3) y 4) pero en lugar de considerar el número de infectados, considerar el
-**número de hospitalizados**.
+Realizar las preguntas 1), 2), 3) y 4) pero en lugar de considerar el número de infectados, considerar el **número de hospitalizados**.
+
+```{r}
+data <- read.csv("data/DatosCCAA.csv")
+data$fecha %<>% ymd()
+
+data %<>%
+  select(fecha, CCAA, total, tipo) %>%
+  pivot_wider(names_from = CCAA, values_from = total)
+
+data = data[data$tipo == "hospitalizados", ]
+
+data %>%
+  kable()
+```
+
+```{r}
+x = data$fecha
+ggplot(data, aes(x)) +
+  geom_line(aes(y = Andalucía, colour = "Andalucía")) +
+  geom_line(aes(y = Aragón, colour = "Aragón")) +
+  geom_line(aes(y = Asturias, colour = "Asturias")) +
+  geom_line(aes(y = Baleares, colour = "Baleares")) +
+  geom_line(aes(y = Canarias, colour = "Canarias")) +
+  geom_line(aes(y = Cantabria, colour = "Cantabria")) +
+  geom_line(aes(y = `Castilla-La Mancha`, colour = "Castilla-La Mancha")) +
+  geom_line(aes(y = `Castilla y León`, colour = "Castilla y León")) +
+  geom_line(aes(y = Cataluña, colour = "Cataluña")) +
+  geom_line(aes(y = `C. Valenciana`, colour = "C. Valenciana")) +
+  geom_line(aes(y = Extremadura, colour = "Extremadura")) +
+  geom_line(aes(y = Galicia, colour = "Galicia")) +
+  geom_line(aes(y = Madrid, colour = "Madrid")) +
+  geom_line(aes(y = Murcia, colour = "Murcia")) +
+  geom_line(aes(y = Navarra, colour = "Navarra")) +
+  geom_line(aes(y = `País Vasco`, colour = "País Vasco")) +
+  xlab("Fecha") + ylab("Frecuencias")
+```
+
+```{r ,eval=FALSE}
+# No he entendido bien como realizar el procedimiento de este ejercicio, así que he copiado y pegado
+fecha = "2020-03-15"
+
+freq_emp = data[data$fecha==fecha & data$tipo=="hospitalizados", ]
+freq_emp = freq_emp[c(-1, -2)]
+freq_emp_sum = sum(freq_emp)
+
+data2 = read.csv("data/Fichero_poblacionCCAA.csv")
+
+pob_ccaa = data2$Pob_CCAA_2019
+pob_total = sum(pob_ccaa)
+
+freq_esperada = freq_emp_sum*data2$ccaa/pob_total
+```
+
+```{r ,eval=FALSE}
+chisq.test(freq_emp, p = freq_esperada/sum(freq_esperada))
+```

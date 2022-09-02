@@ -46,7 +46,6 @@ plot(TVM ~ Date, data = datos_spain,
 
 ## Pregunta 3
 
-¿Se observa algún cambio en la tendencia que parezca indicar que el contagio se está frenando y que las
-medidas de contención son efectivas? Justifica la respuesta.
+¿Se observa algún cambio en la tendencia que parezca indicar que el contagio se está frenando y que las medidas de contención son efectivas? Justifica la respuesta.
 
 Se puede observar que con las medidas impuestas por el gobierno de España, a partir del confinamiento nacional del 14 de marzo de 2020, la TVM tendiera a cero. El 24 de abril de 2020 se notifican valores negativos de TVM debido a que no se registró correctamente el acumulado de los contagios confirmados (en esa fecha se registraron -10034 nuevos casos confirmados).

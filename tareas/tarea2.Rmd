@@ -2,7 +2,11 @@
 title: "Tarea 2 - Estudio de la homogeneidad de la infección para los datos de España"
 author: "Jesus Mudarra Luján"
 date: '2022-09-01'
-output: html_document
+output:
+  html_document:
+    theme: cerulean
+    toc: true
+    toc_float: true
 ---
 
 ```{r setup, include=FALSE}

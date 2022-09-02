@@ -2,7 +2,11 @@
 title: "Análisis COVID-19"
 author: "Ricardo Alberich, Juan Gabriel Gomila y Arnau Mir"
 date: '2022-08-22'
-output: html_document
+output:
+  html_document:
+    theme: cerulean
+    toc: true
+    toc_float: true
 ---
 
 ```{r setup, include=FALSE}
@@ -433,5 +437,55 @@ qqPlot(residuos, distribution = "norm",
        mean = mean(residuos), sd = sd(residuos))
 ```
 
+## Modelo de Regresión Potencial
 
+$$log(y) = a\cdot log(x)+b, a,b\in \mathbb R$$
 
+$$y = e^{a\cdot log(x)+b} = e^b\cdot e^{log(x)^a} = m\cdot x^a$$
+
+```{r}
+mod3 <- lm(log(Casos_Confirmados) ~ log(Dias),
+           data = datos_spain[datos_spain$Casos_Confirmados > 0, ])
+summary(mod3)
+```
+
+$$Casos\ Confirmados = r`exp(mod3$coefficients[1])`\cdot Dias^{`r mod2$coefficients[2]`}$$
+
+```{r}
+plot(datos_spain$Dias, datos_spain$Casos_Confirmados)
+lines(exp(mod3$coefficients[1])*datos_spain$Dias^mod3$coefficients[2], col = "green")
+
+plot(mod3$residuals ~ mod3$fitted.values,
+     xlab = "Valores Ajustados", ylab = "Residuos del modelo")
+residuos = mod3$residuals
+qqPlot(residuos, distribution = "norm", mean = mean(residuos), sd = sd(residuos))
+```
+
+```{r}
+my_model <- lm(log(Casos_Confirmados) ~ Dias + log(Dias) + I(Dias^2) + I(Dias^3) + sqrt(Dias),
+               data = datos_spain[datos_spain$Casos_Confirmados> 0, ])
+summary(my_model)
+```
+
+## Comparación visual de los tres modelos
+
+```{r}
+start_date = ymd("2020-01-22")
+end_date = ymd("2020-08-15")
+dates = seq(start_date+1, end_date, by = "1 day")
+days_since_start = as.numeric(dates - start_date)
+new_data = data.frame(Dias = days_since_start)
+pred1 = predict(mod1, newdata = new_data)
+pred2 = exp(predict(mod2, newdata = new_data))
+pred3 = exp(predict(mod3, newdata = new_data))
+pred4 = exp(predict(my_model, newdata = new_data))
+
+datos_por_fecha_ts = xts(x = data.frame(Real = c(datos_spain$Casos_Confirmados, rep(NA,length(pred1)- length(datos_spain$Casos_Confirmados))),
+                                        Mod_Lin = pred1,
+                                        Mod_Exp = pred2,
+                                        Mod_Pot = pred3,
+                                        Mod_Mixt = pred4 # Aparece una cosa sin sentido
+                         ),
+                         order.by = dates)
+dygraph(datos_por_fecha_ts)
+```

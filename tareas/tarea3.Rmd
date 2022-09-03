@@ -1,0 +1,170 @@
+---
+title: "Modelo SIR aplicado a la comunidad de Madrid"
+author: "Jesus Mudarra Luján"
+date: '2022-09-03'
+output:
+  html_document:
+    theme: cerulean
+    toc: yes
+    toc_float: yes
+---
+
+# Instrucciones
+
+En esta tarea aplicaremos el modelo SIR a los datos de la comunidad de Madrid. Concretamente calcularemos el número básico de reproducción R0 y estudiaremos si la epidemia continuará expandiéndose.
+
+# Descripción de la tarea
+
+En el recurso descargable `ficheros.zip` tenéis dos ficheros:
+
+- El archivo `datosCCAA.csv` donde estan los datos del número de infectados, hospitalizados, fallecidos, pacientes en las UCI y recuperados (altas) (ver la variable o columna tipo) de las 17 comunidades autónomas (faltan Ceuta y Melilla) de España.
+
+- El archivo `Fichero_poblaciónCCAA.csv` donde están los datos de la población o del número de habitantes de las 17 comunidades autónomas.
+
+# Pregunta 1
+
+Cargar los datos del número de infectados, fallecidos, hospitalizados, enfermos en las UCI y recuperados de las comunidades autónomas.
+
+Llamarle datos a la variable de `R` donde habéis almacenado la información.
+
+Usando la función `select` del paquete `tidyverse` seleccionar las variables que nos da la fecha, la comunidad autónoma, la variable total y tipo de la variable datos.
+
+```{r}
+datos = read.csv("data/DatosCCAA.csv")
+```
+
+```{r}
+library(tidyverse)
+datos = datos %>%
+  select(fecha, CCAA, total, tipo)
+```
+
+# Pregunta 2
+
+A partir de la variable filtrada de la pregunta anterior y usando la función filter, calcular tres tablas de datos:
+
+- `casos.Madrid` que tenga las columnas o variables fecha y número de infectados de la comunidad de Madrid.
+
+- `fallecidos.Madrid` que tenga las columnas o variables fecha y número de fallecidos de la comunidad de Madrid.
+
+- `recuperados.Madrid` que tenga las columnas o variables fecha y número de altas o recuperados de la comunidad de Madrid.
+
+Veréis que las variables número de infectados, fallecidos y recuperados de las tres tablas de datos anteriores no tienen la misma longitud.
+
+```{r}
+casos.Madrid  = datos %>%
+  filter(tipo == "casos") %>%
+  filter(CCAA == "Madrid") %>%
+  select(fecha, total)
+
+fallecidos.Madrid = datos %>%
+  filter(tipo == "fallecidos") %>%
+  filter(CCAA == "Madrid") %>%
+  select(fecha, total)
+
+recuperados.Madrid = datos %>%
+  filter(tipo == "altas") %>%
+  filter(CCAA == "Madrid") %>%
+  select(fecha, total)
+```
+
+A partir de las tablas anteriores, crear tres vectores más que nos den los infectados, fallecidos y recuperados de la comunidad de Madrid asegurándose que tienen la misma longitud añadiendo ceros al principio de los vectores que tengan longitud menor.
+
+```{r}
+# Todos los vectores con la misma longitud que casos.Madrid (la tabla con mayor longitud)
+fallecidos.Madrid.vec = c(rep(0, length(casos.Madrid$total) - length(fallecidos.Madrid$total)),
+                     fallecidos.Madrid$total)
+
+recuperados.Madrid.vec = c(rep(0, length(casos.Madrid$total) - length(recuperados.Madrid$total)),
+                       recuperados.Madrid$total)
+
+casos.Madrid.vec = casos.Madrid$total
+```
+
+# Pregunta 3
+
+A partir de la población de la comunidad de Madrid, hallar la estimación del número básico de reproducción $R_0$ y compararlo con el valor adecuado para estudiar si la epidemia se seguirá expandiendo o no.
+
+```{r}
+habitantes = read.csv("data/Fichero_poblacionCCAA.csv")
+
+habitantes.MAD = habitantes[habitantes$CCAA=="MADRID",]$Pob_CCAA_2019
+```
+
+```{r}
+susceptibles = habitantes.MAD - casos.Madrid.vec - recuperados.Madrid.vec
+```
+
+```{r}
+x = recuperados.Madrid.vec
+y = habitantes.MAD * log(susceptibles)
+
+summary(lm(y ~ x))
+
+(R0 = -summary(lm(y ~ x))$coefficients[2])
+```
+
+```{r}
+dia.ultimo = length(casos.Madrid.vec)
+
+exp(R0 * recuperados.Madrid.vec[dia.ultimo]/habitantes.MAD)
+```
+
+Da aproximadamente 1. Por tanto, como el valor de $R0 = `r R0`$ supera con creces 1 desgraciadamente el COVID-19 se expandirá (y así ha sido) por Madrid.
+
+# Pregunta 4
+
+Realizar el estudio de las tres preguntas anteriores para los datos de la Comunidad de Cataluña.
+
+```{r}
+casos.Cataluña  = datos %>%
+  filter(tipo == "casos") %>%
+  filter(CCAA == "Cataluña") %>%
+  select(fecha, total)
+
+fallecidos.Cataluña = datos %>%
+  filter(tipo == "fallecidos") %>%
+  filter(CCAA == "Cataluña") %>%
+  select(fecha, total)
+
+recuperados.Cataluña = datos %>%
+  filter(tipo == "altas") %>%
+  filter(CCAA == "Cataluña") %>%
+  select(fecha, total)
+```
+
+```{r}
+# Todos los vectores con la misma longitud que casos.Cataluña (la tabla con mayor longitud)
+fallecidos.Cataluña.vec = c(rep(0, length(casos.Cataluña$total) - length(fallecidos.Cataluña$total)),
+                     fallecidos.Cataluña$total)
+
+recuperados.Cataluña.vec = c(rep(0, length(casos.Cataluña$total) - length(recuperados.Cataluña$total)),
+                       recuperados.Cataluña$total)
+
+casos.Cataluña.vec = casos.Cataluña$total
+```
+
+```{r}
+habitantes.CAT = habitantes[habitantes$CCAA=="CATALUÑA",]$Pob_CCAA_2019
+```
+
+```{r}
+susceptibles = habitantes.CAT - casos.Cataluña.vec - recuperados.Cataluña.vec
+```
+
+```{r}
+x = recuperados.Cataluña.vec
+y = habitantes.CAT * log(susceptibles)
+
+summary(lm(y ~ x))
+
+(R0 = -summary(lm(y ~ x))$coefficients[2])
+```
+
+```{r}
+dia.ultimo = length(casos.Cataluña.vec)
+
+exp(R0 * recuperados.Cataluña.vec[dia.ultimo]/habitantes.CAT)
+```
+
+Da aproximadamente 1. Por tanto, como el valor de $R0 = `r R0`$ supera con creces 1 desgraciadamente el COVID-19 se expandirá (y así ha sido) por Cataluña, de manera más pronunciada que en Madrid.

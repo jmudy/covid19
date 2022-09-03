@@ -18,4 +18,4 @@ Durante el curso no se emplea en ningún momento `Python`, por lo que se puede p
 
 * He eliminado los scripts de `R` del repo original ya que no me funcionaba ninguno de ellos, me saltaban errores que no he podido solucionar.
 
-* Los datos utilizados en `Fuentes_de_datos.Rmd` utiliza datos COVID-19 en España no actualizados (contienen datos hasta abril 2020). En el resto de RMarkdowns sí que se ha empleado un dataset actualizado al día de escribir el código (agosto 2022).
+* Los datos del dataset de Kaggle utilizados en `Fuentes_de_datos.Rmd` emplea datos COVID-19 en España no actualizados (contienen datos hasta abril 2020). En el resto de RMarkdowns sí que se ha empleado una versión del dataset de Kaggle actualizado al día de escribir el código (agosto 2022).

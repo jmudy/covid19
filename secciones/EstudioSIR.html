@@ -3458,7 +3458,7 @@ covid19$Date=as.Date(as.character(covid19$Date),&quot;%Y-%m-%d&quot;)</pre>
 
 <p>Para calcular el número de habitantes por países vamos a usar la función <code>wb</code> del paquete <code>wbstats</code>:</p>
 
-<pre class = 'prettyprint lang-r'>library(wbstats)
+<pre class = 'prettyprint lang-r'>library(wbstats) # versión 1.0.4
 pop_data &lt;- wb(indicator = &quot;SP.POP.TOTL&quot;, startdate = 2018, enddate = 2019)</pre>
 
 <pre >## Warning: `wb()` was deprecated in wbstats 1.0.0.

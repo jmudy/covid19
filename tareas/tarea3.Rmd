@@ -1,5 +1,5 @@
 ---
-title: "Modelo SIR aplicado a la comunidad de Madrid"
+title: "Tarea 3 - Modelo SIR aplicado a la comunidad de Madrid"
 author: "Jesus Mudarra Luján"
 date: '2022-09-03'
 output:

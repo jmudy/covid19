@@ -1,0 +1,164 @@
+---
+title: Tarea 4 - Modelado y estudio de la serie temporal de los datos de las CCAA de España
+author: "Jesus Mudarra Luján"
+date: '2022-09-04'
+output:
+  html_document:
+    theme: cerulean
+    toc: yes
+    toc_float: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse) # versión 1.3.2
+library(forecast) # versión 8.16
+library(magrittr) # versión 2.0.3
+```
+
+# Instrucciones
+
+El fichero `DatosCCAA.csv` que tienes como recurso descargable contiene los datos del número de infectados (casos), fallecidos, hospitalizados y hospitalizados en las UCI de las 17 comunidades autónomas de España excepto Ceuta y Melilla.
+
+Cárgalo en la variable datos y échale un vistazo con la función View.
+
+# Descripción de la tarea
+
+En esta tarea vamos a modelar los infectados, fallecidos y hospitalizados de coronavirus de las comunidades autónomas de España.
+
+# Pregunta 1
+
+Usando el paquete `tidyverse`, filtra los datos del fichero que has cargado seleccionando sólo las variables **fecha, CCAA, total y tipo.**
+
+A partir de la nueva tabla de datos, vuelve a filtrar los datos seleccionando sólo los datos de la variable total de la comunidad de Madrid sólo del tipo "casos".
+
+```{r}
+datos = read.csv("data/DatosCCAA.csv")
+
+datos %<>%
+  select(fecha, CCAA, total, tipo) %>%
+  filter(tipo == "casos") %>%
+  filter(CCAA == "Madrid") %>%
+  select(total)
+```
+
+# Pregunta 2
+
+Modeliza el número de infectados de la comunidad de Madrid como una serie temporal indicando el día de la semana que empieza la serie.
+
+Haz también un gráfico de la serie temporal usando la función `autoplot` del paquete `forecast.`
+
+```{r}
+infectados = ts(datos, frequency = 7, start = c(1, 4)) # semana 1 dia 4
+autoplot(infectados)
+```
+
+# Pregunta 3
+
+Suponiendo que la serie que nos da el número de infectados de la comunidad de Madrid es estacional y suponiendo el modelo aditivo, calcula las tres componentes de la serie temporal, componente estacional, tendencia y aleatoria. Comenta los días de la semana en que según la componente estacional hay más infectados y los días de la semana en que hay menos.
+
+Haz un gráfico de las componentes de la serie comentando los resultados.
+
+```{r}
+components = decompose(infectados, type = "additive")
+
+components$seasonal
+```
+
+Los jueves, viernes y sábados (213.97328, 100.97328, 315.97328) son los días con menos infectados. Los domingos, lunes y martes (-72.48251, -419.78863, -155.76482), siendo el lunes el día con una disminución más acentuada de los infectados.
+
+```{r}
+autoplot(components)
+```
+
+La componente aleatoria se mantiene estable aproximadamente hasta la semana 3.
+
+# Pregunta 4
+
+Ajusta la serie temporal que nos da el número de infectados de la comunidad de Madrid eliminando la componente estacional y haz un gráfico de la misma.
+
+Usando el doble suavizado exponencial del modelo de Holt-Winters, calcula la serie predicha comentando los valores de los parámetros alpha y beta.
+
+Calcula el error SSE cometido y su raíz cuadrada de la serie predicha y haz un gráfico de la serie original ajustada y la predicha.
+
+```{r}
+infectados.ajustados = infectados - components$seasonal
+
+autoplot(infectados.ajustados)
+```
+
+Tiene el mismo aspecto que la original a pesar de haberle restado las variaciones estacionales.
+
+Cálculo de la serie predicha usando el doble suavizado exponencial del modelo de **Holt-Winters**:
+
+```{r}
+# gamma = FALSE porque es doble, no triple
+prediccion.infectados = HoltWinters(infectados.ajustados, gamma = FALSE)
+alpha = prediccion.infectados$alpha
+alpha
+beta = prediccion.infectados$beta
+beta
+```
+
+El valor de $\alpha$ es alto, lo que nos dice que las predicciones usan el nivel actual de la serie de infectados con un peso elevado, es decir, para predecir el valor de un día en particular, usa el valor de los infectados del día actual con un peso de $\alpha = `r alpha`$.
+
+Como el valor de $\beta$ vale $`r beta`$, tenemos que la pendiente de tendencia de la predicción en un día particular vale $`r beta`$.
+
+El error cometido en las predicciones, es decir, la suma de los cuadrados de las diferencias entre los valores de la serie original ajustada y la serie ajustada, es:
+
+```{r}
+prediccion.infectados$SSE
+sqrt(prediccion.infectados$SSE)
+```
+
+```{r}
+plot(prediccion.infectados)
+```
+
+Como se puede observar en el gráfico anterior la predicción es bastante buena utilizando este modelo.
+
+# Pregunta 5
+
+A partir de la serie ajustada que nos da el número de infectados de la comunidad de Madrid, calcula la predicción del número de infectados a una semana vista junto con los intervalos de confianza al $80$ y al $95\%$. Haz un gráfico de la predicción anterior mostrando los intervalo de confianza anteriores.
+
+```{r}
+prediccion.infectados.semana = forecast:::forecast.HoltWinters(prediccion.infectados, h = 7)
+```
+
+```{r}
+forecast::autoplot(prediccion.infectados.semana)
+```
+
+La primera banda representaría el intervalo de confianza al 80% y la banda más suave el intervalo de confianza al 95%. La tendencia es a subir a una semana vista.
+
+# Pregunta 6
+
+Testea las hipótesis siguientes sobre los residuos de la serie predicha a una semana vista de la serie ajustada que nos da el número de infectados de la comunidad de Madrid:
+
+- los residuos no presentan autocorrelaciones a partir del gráfico del correlograma y del test de Lunj-Box.
+
+- los residuos son normales.
+
+Comenta los resultados obtenidos.
+
+Comprobación del modelo:
+
+```{r}
+ggAcf(prediccion.infectados.semana$residuals[3:75], lag.max = 7)
+```
+
+Como se puede observar, la autocorrelación cuando tenemos un lag de 7 días de los residuos es significativa.
+
+```{r}
+Box.test(prediccion.infectados.semana$residuals,lag = 7, type = "Ljung-Box")
+```
+
+Aparece un p-value bastante elevado `p-value = 0.7446`, es decir, los datos son probables con una hipótesis nula verdadera, por tanto el modelo sí que sería adecuado.
+
+Por último, comprobaremos la normalidad de los residuos con el test de **Shapiro-Wilks**:
+
+```{r}
+shapiro.test(prediccion.infectados.semana$residuals)
+```
+
+En este caso obtenemos un `p-value = 0.01765`, un valor bajo significativo, por tanto el modelo en este caso no sería adecuado.
